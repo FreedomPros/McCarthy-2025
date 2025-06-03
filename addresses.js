@@ -40,5 +40,13 @@ const addresses = [
         phone: "385-219-0979",
         address: "3536 W Dorothea Ave. Visalia, CA. 93277",
         coords: [36.2995, -119.3258]
+    },
+    {
+        name: "FURY",
+        poc: "Jay Merrifield",
+        phone: "801-336-6924",
+        address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
+        coords: [33.6644, -117.7576],
+        date: "June 26th & 27th"
     }
 ];
