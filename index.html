@@ -25,13 +25,15 @@
 
         // Add markers from addresses.js
         addresses.forEach(function(addr) {
-            var marker = L.marker(addr.coords).addTo(map);
-            marker.bindPopup(
-                `<strong>${addr.name}</strong><br>
+            var popupContent = `<strong>${addr.name}</strong><br>
                 POC: ${addr.poc}<br>
                 Phone: <a href="tel:${addr.phone}">${addr.phone}</a><br>
-                Address: ${addr.address}`
-            );
+                Address: ${addr.address}`;
+            if (addr.date) {
+                popupContent += `<br>Date: ${addr.date}`;
+            }
+            var marker = L.marker(addr.coords).addTo(map);
+            marker.bindPopup(popupContent);
             marker.on('mouseover', function(e) {
                 this.openPopup();
             });
