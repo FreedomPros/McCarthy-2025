@@ -29,7 +29,7 @@ const addresses = [
         phone: "484-401-0077",
         address: "27141 Hideaway Ave. Santa Clarita, 91351",
         coords: [34.4264, -118.4842],
-        date: "July 17 - 18"
+        date: "July 10 - 11"
     },
     {
         name: "MOTION",
