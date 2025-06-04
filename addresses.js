@@ -18,7 +18,8 @@ const addresses = [
         poc: "Casey / Cam Kendall",
         phone: "206-554-1489",
         address: "340 S EAST END AVE. SUITE F. PAMONA, CA. 91766",
-        coords: [34.0551, -117.7497]
+        coords: [34.0551, -117.7497],
+        date: "July 3 - 4"
     },
     {
         name: "THE SPARTANS",
@@ -32,7 +33,8 @@ const addresses = [
         poc: "Junior Bandeira",
         phone: "773-501-5285",
         address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
-        coords: [37.7038, -121.7680]
+        coords: [37.7038, -121.7680],
+        date: "July 7 - 8"
     },
     {
         name: "PRIME",
@@ -48,5 +50,13 @@ const addresses = [
         address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
         coords: [33.6644, -117.7576],
         date: "June 26th & 27th"
+    },
+    {
+        name: "MOMENTVS",
+        poc: "Cole Sexton & Christian Harrison",
+        phone: "320-339-1204",
+        address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+        coords: [34.0921, -117.5743],
+        date: "June 23 - 24"
     }
 ];
