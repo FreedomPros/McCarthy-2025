@@ -49,7 +49,7 @@ const addresses = [
         phone: "801-336-6924",
         address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
         coords: [33.6644, -117.7576],
-        date: "June 26th & 27th"
+        date: "June 26 - 27"
     },
     {
         name: "MOMENTVS",
