@@ -13,7 +13,7 @@ const addresses = [
         phone: "970-966-0240",
         address: "2525 NATOMAS PARK DR. 3RD FLOOR, SUITE 320. SACROMENTO, CA",
         coords: [38.6313, -121.5051],
-        date: "July 14 - 15"
+        date: "July 17 - 18"
     },
     {
         name: "UNITED",
@@ -45,7 +45,7 @@ const addresses = [
         phone: "385-219-0979",
         address: "3536 W Dorothea Ave. Visalia, CA. 93277",
         coords: [36.2995, -119.3258],
-        date: "July 10 - 11"
+        date: "July 14 - 15"
     },
     {
         name: "FURY",
