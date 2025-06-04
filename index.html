@@ -6,40 +6,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        #map { height: 100vh; width: 100vw; }
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        #container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+        #sidebar {
+            width: 320px;
+            background: #f9f9f9;
+            overflow-y: auto;
+            border-right: 1px solid #ccc;
+            padding: 16px 8px;
+            box-sizing: border-box;
+        }
+        #sidebar h2 {
+            margin-top: 0;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #sidebar li {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-size: 1em;
+            line-height: 1.3;
+        }
+        #sidebar li:hover, #sidebar li.active {
+            background: #e4e7fa;
+        }
+        #sidebar .legend-date {
+            font-weight: bold;
+            color: #3253a8;
+            margin-right: 6px;
+        }
+        #map {
+            flex: 1;
+            height: 100vh;
+            width: 100%;
+        }
+        .leaflet-marker-icon.selected {
+            transform: scale(1.5);
+            z-index: 1000 !important;
+            filter: drop-shadow(0 0 6px #3253a8);
+        }
     </style>
 </head>
 <body>
-    <div id="map"></div>
+    <div id="container">
+        <div id="sidebar">
+            <h2>2025 Office Schedule</h2>
+            <ul id="location-list"></ul>
+        </div>
+        <div id="map"></div>
+    </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="addresses.js"></script>
     <script>
-        // Initialize map centered in California
-        var map = L.map('map').setView([36.7783, -119.4179], 6);
+        // Helper to parse dates for sorting
+        function parseFirstDate(dateStr) {
+            if (!dateStr) return new Date(3000, 0, 1); // put undated at end
+            // Handles formats like "June 23 - 24", "July 3 - 4", "June 26th & 27th"
+            const months = {
+                january:0, february:1, march:2, april:3, may:4, june:5, july:6, august:7, september:8, october:9, november:10, december:11
+            };
+            let [monthPart, rest] = dateStr.toLowerCase().split(/[\s-]+/, 2);
+            let month = months[monthPart];
+            let dayMatch = dateStr.match(/\d+/);
+            let day = dayMatch ? parseInt(dayMatch[0], 10) : 1;
+            // 2025 for this map
+            return new Date(2025, month, day);
+        }
 
-        // Add OpenStreetMap tile layer
+        // Sort by date (undated at bottom)
+        const sortedAddresses = [...addresses].sort((a, b) => {
+            const dA = parseFirstDate(a.date);
+            const dB = parseFirstDate(b.date);
+            return dA - dB;
+        });
+
+        var map = L.map('map').setView([36.7783, -119.4179], 6);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
-        // Add markers from addresses.js
-        addresses.forEach(function(addr) {
+        var markers = [];
+        var locationList = document.getElementById('location-list');
+
+        sortedAddresses.forEach(function(addr, idx) {
+            var marker = L.marker(addr.coords).addTo(map);
             var popupContent = `<strong>${addr.name}</strong><br>
                 POC: ${addr.poc}<br>
                 Phone: <a href="tel:${addr.phone}">${addr.phone}</a><br>
                 Address: ${addr.address}`;
             if (addr.date) {
-                popupContent += `<br>Date: ${addr.date}`;
+                popupContent += `<br>Date: <strong>${addr.date}</strong>`;
             }
-            var marker = L.marker(addr.coords).addTo(map);
             marker.bindPopup(popupContent);
-            marker.on('mouseover', function(e) {
-                this.openPopup();
+
+            markers.push(marker);
+
+            // Sidebar legend entry
+            var li = document.createElement('li');
+            li.innerHTML = 
+                (addr.date ? `<span class="legend-date">${addr.date}</span>` : '') +
+                `<span>${addr.name}</span>`;
+            li.onmouseenter = function() {
+                focusMarker(marker, li, addr.coords);
+            };
+            li.onclick = function() {
+                focusMarker(marker, li, addr.coords, true);
+            };
+            li.onmouseleave = function() {
+                unfocusAll();
+            };
+            marker.on('popupclose', function() {
+                unfocusAll();
             });
-            marker.on('mouseout', function(e) {
-                this.closePopup();
+            marker.on('click', function() {
+                focusMarker(marker, li, addr.coords, true);
             });
+            locationList.appendChild(li);
+
+            function focusMarker(marker, li, coords, openPopup=false) {
+                // Remove highlight from all
+                document.querySelectorAll('#sidebar li').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                li.classList.add('active');
+                // Reset all marker icons
+                document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
+                    icon.classList.remove('selected');
+                });
+                if (marker._icon) marker._icon.classList.add('selected');
+                // Zoom and open popup
+                map.setView(coords, 13, { animate: true });
+                if (openPopup) marker.openPopup();
+            }
+            function unfocusAll() {
+                document.querySelectorAll('#sidebar li').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
+                    icon.classList.remove('selected');
+                });
+            }
         });
     </script>
 </body>
