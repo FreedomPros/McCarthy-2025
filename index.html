@@ -49,18 +49,20 @@
             gap: 8px;
         }
         #sidebar li:hover, #sidebar li.active {
-            background: #e4e7fa;
+            outline: 2px solid #3253a8;
         }
+        /* Entire line color-coded by month */
+        #sidebar li.june { background: #C1E1C1; color: #206020; }
+        #sidebar li.july { background: #B6D0E2; color: #204060; }
+        #sidebar li.august { background: #FFD580; color: #805A00; }
+        #sidebar li.default { background: #eee; color: #333; }
         #sidebar .legend-date {
             font-weight: bold;
             margin-right: 6px;
             padding: 2px 6px;
             border-radius: 4px;
+            background: rgba(0,0,0,0.07);
         }
-        #sidebar .legend-date.june { background: #C1E1C1; color: #206020; }
-        #sidebar .legend-date.july { background: #B6D0E2; color: #204060; }
-        #sidebar .legend-date.august { background: #FFD580; color: #805A00; }
-        #sidebar .legend-date.default { background: #eee; color: #333; }
         #map {
             flex: 1;
             height: 100vh;
@@ -84,7 +86,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="addresses.js"></script>
     <script>
-        // Helper: get month name from a date string like "June 23 - 24"
+        // Helper: get month name/class from a date string like "June 23 - 24"
         function getMonthClass(dateStr) {
             if (!dateStr) return "default";
             dateStr = dateStr.toLowerCase();
@@ -96,20 +98,17 @@
 
         // Helper to parse dates for sorting
         function parseFirstDate(dateStr) {
-            if (!dateStr) return new Date(3000, 0, 1); // put undated at end
-            // Handles formats like "June 23 - 24", "July 3 - 4", "June 26th & 27th"
+            if (!dateStr) return new Date(3000, 0, 1); // undated at end
             const months = {
                 january:0, february:1, march:2, april:3, may:4, june:5, july:6, august:7, september:8, october:9, november:10, december:11
             };
-            let [monthPart, rest] = dateStr.toLowerCase().split(/[\s-]+/, 2);
+            let [monthPart] = dateStr.toLowerCase().split(/[\s-]+/, 2);
             let month = months[monthPart];
             let dayMatch = dateStr.match(/\d+/);
             let day = dayMatch ? parseInt(dayMatch[0], 10) : 1;
-            // 2025 for this map
             return new Date(2025, month, day);
         }
 
-        // Sort by date (undated at bottom)
         const sortedAddresses = [...addresses].sort((a, b) => {
             const dA = parseFirstDate(a.date);
             const dB = parseFirstDate(b.date);
@@ -124,8 +123,9 @@
 
         var markers = [];
         var locationList = document.getElementById('location-list');
+        var markerToLi = new Map();
+        var liToMarker = new Map();
         var lastOpenedPopup = null;
-        var lastActiveLi = null;
 
         sortedAddresses.forEach(function(addr, idx) {
             var marker = L.marker(addr.coords).addTo(map);
@@ -143,40 +143,46 @@
             // Sidebar legend entry
             var li = document.createElement('li');
             let monthClass = getMonthClass(addr.date);
+            li.classList.add(monthClass);
             li.innerHTML =
-                (addr.date ? `<span class="legend-date ${monthClass}">${addr.date}</span>` : '') +
+                (addr.date ? `<span class="legend-date">${addr.date}</span>` : '') +
                 `<span>${addr.name}</span>`;
 
-            // Hover: show popup and highlight marker, but zoom less
+            // Map marker <-> list item linkage
+            markerToLi.set(marker, li);
+            liToMarker.set(li, marker);
+
+            // Hover: show popup and highlight marker, no zoom
             li.onmouseenter = function() {
-                focusMarker(marker, li, addr.coords, true, false); // open popup, no zoom
-            };
-            li.onclick = function() {
-                focusMarker(marker, li, addr.coords, true, true); // open popup, zoom in
+                focusMarker(marker, li, true);
             };
             li.onmouseleave = function() {
                 unfocusAll();
+            };
+            li.onclick = function(e) {
+                // On click, also open popup (sticky)
+                focusMarker(marker, li, true);
+                marker.openPopup();
             };
 
             // Marker events
             marker.on('popupclose', function() {
                 unfocusAll();
             });
-            marker.on('click', function() {
-                focusMarker(marker, li, addr.coords, true, true); // open popup, zoom
+            marker.on('click', function(e) {
+                focusMarker(marker, li, true);
+                marker.openPopup();
             });
             marker.on('mouseover', function() {
-                focusMarker(marker, li, addr.coords, true, false); // open popup, no zoom
+                focusMarker(marker, li, true);
             });
             marker.on('mouseout', function() {
-                // Only close if not sticky (clicked)
-                if (lastActiveLi !== li) unfocusAll();
+                unfocusAll();
             });
 
             locationList.appendChild(li);
 
-            // Focus/highlight marker and sidebar entry
-            function focusMarker(marker, li, coords, openPopup = true, doZoom = false) {
+            function focusMarker(marker, li, openPopup = true) {
                 // Remove highlight from all
                 document.querySelectorAll('#sidebar li').forEach(function(el) {
                     el.classList.remove('active');
@@ -187,19 +193,12 @@
                     icon.classList.remove('selected');
                 });
                 if (marker._icon) marker._icon.classList.add('selected');
-                if (doZoom) {
-                    map.setView(coords, 9, { animate: true });
-                    lastActiveLi = li;
-                } else {
-                    map.setView(coords, map.getZoom(), { animate: false });
-                    lastActiveLi = null;
-                }
                 if (openPopup) {
                     marker.openPopup();
                     lastOpenedPopup = marker.getPopup();
                 }
             }
-            // Remove highlight
+
             function unfocusAll() {
                 document.querySelectorAll('#sidebar li').forEach(function(el) {
                     el.classList.remove('active');
@@ -211,7 +210,6 @@
                     map.closePopup(lastOpenedPopup);
                     lastOpenedPopup = null;
                 }
-                lastActiveLi = null;
             }
         });
     </script>
