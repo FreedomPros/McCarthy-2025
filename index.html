@@ -102,9 +102,9 @@
             const months = {
                 january:0, february:1, march:2, april:3, may:4, june:5, july:6, august:7, september:8, october:9, november:10, december:11
             };
-            let [monthPart] = dateStr.toLowerCase().split(/[\s-]+/, 2);
-            let month = months[monthPart];
-            let dayMatch = dateStr.match(/\d+/);
+            let [monthPart] = dateStr ? dateStr.toLowerCase().split(/[\s-]+/, 2) : [''];
+            let month = months[monthPart] ?? 0;
+            let dayMatch = dateStr ? dateStr.match(/\d+/) : null;
             let day = dayMatch ? parseInt(dayMatch[0], 10) : 1;
             return new Date(2025, month, day);
         }
@@ -152,66 +152,74 @@
             markerToLi.set(marker, li);
             liToMarker.set(li, marker);
 
-            // Hover: show popup and highlight marker, no zoom
+            // -- SIDEBAR EVENTS --
             li.onmouseenter = function() {
-                focusMarker(marker, li, true);
+                highlightMarkerAndLi(marker, li);
+                openPopup(marker);
             };
             li.onmouseleave = function() {
-                unfocusAll();
+                unhighlightAll();
+                closePopup();
             };
             li.onclick = function(e) {
-                // On click, also open popup (sticky)
-                focusMarker(marker, li, true);
-                marker.openPopup();
+                highlightMarkerAndLi(marker, li);
+                openPopup(marker);
             };
 
-            // Marker events
+            // -- MARKER EVENTS --
             marker.on('popupclose', function() {
-                unfocusAll();
+                unhighlightAll();
             });
             marker.on('click', function(e) {
-                focusMarker(marker, li, true);
-                marker.openPopup();
+                highlightMarkerAndLi(marker, li);
+                openPopup(marker);
             });
             marker.on('mouseover', function() {
-                focusMarker(marker, li, true);
+                highlightMarkerAndLi(marker, li);
+                openPopup(marker);
             });
             marker.on('mouseout', function() {
-                unfocusAll();
+                unhighlightAll();
+                closePopup();
             });
 
             locationList.appendChild(li);
-
-            function focusMarker(marker, li, openPopup = true) {
-                // Remove highlight from all
-                document.querySelectorAll('#sidebar li').forEach(function(el) {
-                    el.classList.remove('active');
-                });
-                li.classList.add('active');
-                // Reset all marker icons
-                document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
-                    icon.classList.remove('selected');
-                });
-                if (marker._icon) marker._icon.classList.add('selected');
-                if (openPopup) {
-                    marker.openPopup();
-                    lastOpenedPopup = marker.getPopup();
-                }
-            }
-
-            function unfocusAll() {
-                document.querySelectorAll('#sidebar li').forEach(function(el) {
-                    el.classList.remove('active');
-                });
-                document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
-                    icon.classList.remove('selected');
-                });
-                if (lastOpenedPopup) {
-                    map.closePopup(lastOpenedPopup);
-                    lastOpenedPopup = null;
-                }
-            }
         });
+
+        function highlightMarkerAndLi(marker, li) {
+            document.querySelectorAll('#sidebar li').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            li.classList.add('active');
+            document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
+                icon.classList.remove('selected');
+            });
+            if (marker._icon) marker._icon.classList.add('selected');
+        }
+
+        function unhighlightAll() {
+            document.querySelectorAll('#sidebar li').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
+                icon.classList.remove('selected');
+            });
+        }
+
+        function openPopup(marker) {
+            // Only open if not already open
+            if (lastOpenedPopup !== marker) {
+                marker.openPopup();
+                lastOpenedPopup = marker;
+            }
+        }
+
+        function closePopup() {
+            if (lastOpenedPopup) {
+                lastOpenedPopup.closePopup();
+                lastOpenedPopup = null;
+            }
+        }
     </script>
 </body>
 </html>
