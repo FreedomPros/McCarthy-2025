@@ -1,59 +1,120 @@
-<div id="sidebar" class="sidebar-open">
-    <button id="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
-    <h2>Summer Training 2025</h2>
-    <ul id="location-list"></ul>
-</div>
-<!-- Your map and other content here -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Summer Training 2025 Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="sidebar" class="sidebar-open">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#x25C0;</button>
+        <h2>Summer Training 2025</h2>
+        <ul id="location-list"></ul>
+    </div>
+    <div id="map"></div>
 
-<style>
-/* Sidebar styles */
-#sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 320px;
-    max-width: 85vw;
-    height: 100%;
-    background: #fff;
-    border-right: 1px solid #ccc;
-    overflow-y: auto;
-    z-index: 10;
-    transition: transform 0.3s;
-}
-#sidebar.sidebar-closed {
-    transform: translateX(-100%);
-}
-#sidebar-toggle {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 20;
-    background: #f8f8f8;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-    font-size: 1.4em;
-    cursor: pointer;
-    padding: 4px 10px;
-}
-@media (max-width: 600px) {
-    #sidebar {
-        width: 80vw;
-        max-width: 90vw;
-    }
-    #sidebar-toggle {
-        top: 10px;
-        left: 10px;
-        right: auto;
-    }
-}
-</style>
+    <script>
+    // ---- addresses.js content ----
+    const addresses = [
+        {
+            name: "DAUNTLESS",
+            poc: "Casey Mosier",
+            phone: "801-787-2621",
+            address: "15601 Garland Cir. Westminster CA 92683",
+            coords: [33.7436, -117.9677],
+            date: "July 7 - 8"
+        },
+        {
+            name: "MAMBAS",
+            poc: "Cayden Larsen",
+            phone: "970-966-0240",
+            address: "2525 NATOMAS PARK DR. 3RD FLOOR, SUITE 320. SACROMENTO, CA",
+            coords: [38.6313, -121.5051],
+            date: "July 17 - 18"
+        },
+        {
+            name: "UNITED",
+            poc: "Casey / Cam Kendall",
+            phone: "206-554-1489",
+            address: "340 S EAST END AVE. SUITE F. PAMONA, CA. 91766",
+            coords: [34.0551, -117.7497],
+            date: "July 3 - 4"
+        },
+        {
+            name: "THE SPARTANS",
+            poc: "Spencer deavila/ Zak Hattab",
+            phone: "484-401-0077",
+            address: "27141 Hideaway Ave. Santa Clarita, 91351",
+            coords: [34.4264, -118.4842],
+            date: "July 10 - 11"
+        },
+        {
+            name: "MOTION",
+            poc: "Junior Bandeira",
+            phone: "773-501-5285",
+            address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
+            coords: [37.7038, -121.7680],
+            date: "July 21 - 22"
+        },
+        {
+            name: "PRIME",
+            poc: "Hayden Young",
+            phone: "385-219-0979",
+            address: "3536 W Dorothea Ave. Visalia, CA. 93277",
+            coords: [36.2995, -119.3258],
+            date: "July 14 - 15"
+        },
+        {
+            name: "FURY",
+            poc: "Jay Merrifield",
+            phone: "801-336-6924",
+            address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
+            coords: [33.6644, -117.7576],
+            date: "June 26 - 27"
+        },
+        {
+            name: "MOMENTVS",
+            poc: "Cole Sexton & Christian Harrison",
+            phone: "320-339-1204",
+            address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+            coords: [34.0921, -117.5743],
+            date: "June 23 - 24"
+        },
+        {
+            name: "EVOLUTION (BAN)",
+            poc: "Grant Misbach",
+            phone: "(801) 643-9206",
+            address: "13078 Irisbend Ave. Eastvale, CA. 92880",
+            coords: [33.9639, -117.5747],
+            date: "June 30 - July 1"
+        }
+    ];
 
-<script>
-const sidebar = document.getElementById('sidebar');
-const toggleBtn = document.getElementById('sidebar-toggle');
-
-toggleBtn.addEventListener('click', function() {
-    sidebar.classList.toggle('sidebar-closed');
-    sidebar.classList.toggle('sidebar-open');
-});
-</script>
+    // Populate the sidebar with addresses
+    const locationList = document.getElementById('location-list');
+    addresses.forEach(loc => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${loc.name}</strong><br>
+            <em>${loc.date}</em><br>
+            POC: ${loc.poc}<br>
+            Phone: ${loc.phone}<br>
+            ${loc.address}`;
+        locationList.appendChild(li);
+    });
+    </script>
+    <script src="sidebar-toggle.js"></script>
+    <!-- Initialize your map here (e.g., Leaflet, Google Maps, etc.) -->
+    <script>
+    // Example map initialization with Leaflet (remove if not using Leaflet)
+    // Uncomment and adjust as needed:
+    // var map = L.map('map').setView([34.05, -118.25], 7);
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //   attribution: '&copy; OpenStreetMap contributors'
+    // }).addTo(map);
+    // addresses.forEach(loc => {
+    //   L.marker(loc.coords).addTo(map).bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
+    // });
+    </script>
+</body>
+</html>
