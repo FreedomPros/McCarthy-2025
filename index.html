@@ -1,225 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>California-2025 Map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
-        #container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
-        #sidebar {
-            width: 320px;
-            background: #f9f9f9;
-            overflow-y: auto;
-            border-right: 1px solid #ccc;
-            padding: 16px 8px;
-            box-sizing: border-box;
-        }
-        #sidebar h2 {
-            margin-top: 0;
-            font-size: 1.3em;
-            text-align: center;
-        }
-        #sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        #sidebar li {
-            padding: 10px 8px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.15s;
-            font-size: 1em;
-            line-height: 1.3;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        #sidebar li:hover, #sidebar li.active {
-            outline: 2px solid #3253a8;
-        }
-        /* Entire line color-coded by month */
-        #sidebar li.june { background: #C1E1C1; color: #206020; }
-        #sidebar li.july { background: #B6D0E2; color: #204060; }
-        #sidebar li.august { background: #FFD580; color: #805A00; }
-        #sidebar li.default { background: #eee; color: #333; }
-        #sidebar .legend-date {
-            font-weight: bold;
-            margin-right: 6px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: rgba(0,0,0,0.07);
-        }
-        #map {
-            flex: 1;
-            height: 100vh;
-            width: 100%;
-        }
-        .leaflet-marker-icon.selected {
-            transform: scale(1.5);
-            z-index: 1000 !important;
-            filter: drop-shadow(0 0 6px #3253a8);
-        }
-    </style>
-</head>
-<body>
-    <div id="container">
-        <div id="sidebar">
-            <h2>2025 Office Schedule</h2>
-            <ul id="location-list"></ul>
-        </div>
-        <div id="map"></div>
-    </div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="addresses.js"></script>
-    <script>
-        // Helper: get month name/class from a date string like "June 23 - 24"
-        function getMonthClass(dateStr) {
-            if (!dateStr) return "default";
-            dateStr = dateStr.toLowerCase();
-            if (dateStr.includes("june")) return "june";
-            if (dateStr.includes("july")) return "july";
-            if (dateStr.includes("august")) return "august";
-            return "default";
-        }
+<div id="sidebar" class="sidebar-open">
+    <button id="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
+    <h2>Summer Training 2025</h2>
+    <ul id="location-list"></ul>
+</div>
+<!-- Your map and other content here -->
 
-        // Helper to parse dates for sorting
-        function parseFirstDate(dateStr) {
-            if (!dateStr) return new Date(3000, 0, 1); // undated at end
-            const months = {
-                january:0, february:1, march:2, april:3, may:4, june:5, july:6, august:7, september:8, october:9, november:10, december:11
-            };
-            let [monthPart] = dateStr ? dateStr.toLowerCase().split(/[\s-]+/, 2) : [''];
-            let month = months[monthPart] ?? 0;
-            let dayMatch = dateStr ? dateStr.match(/\d+/) : null;
-            let day = dayMatch ? parseInt(dayMatch[0], 10) : 1;
-            return new Date(2025, month, day);
-        }
+<style>
+/* Sidebar styles */
+#sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 320px;
+    max-width: 85vw;
+    height: 100%;
+    background: #fff;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+    z-index: 10;
+    transition: transform 0.3s;
+}
+#sidebar.sidebar-closed {
+    transform: translateX(-100%);
+}
+#sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+    background: #f8f8f8;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: 1.4em;
+    cursor: pointer;
+    padding: 4px 10px;
+}
+@media (max-width: 600px) {
+    #sidebar {
+        width: 80vw;
+        max-width: 90vw;
+    }
+    #sidebar-toggle {
+        top: 10px;
+        left: 10px;
+        right: auto;
+    }
+}
+</style>
 
-        const sortedAddresses = [...addresses].sort((a, b) => {
-            const dA = parseFirstDate(a.date);
-            const dB = parseFirstDate(b.date);
-            return dA - dB;
-        });
+<script>
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('sidebar-toggle');
 
-        var map = L.map('map').setView([36.7783, -119.4179], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        var markers = [];
-        var locationList = document.getElementById('location-list');
-        var markerToLi = new Map();
-        var liToMarker = new Map();
-        var lastOpenedPopup = null;
-
-        sortedAddresses.forEach(function(addr, idx) {
-            var marker = L.marker(addr.coords).addTo(map);
-            var popupContent = `<strong>${addr.name}</strong><br>
-                POC: ${addr.poc}<br>
-                Phone: <a href="tel:${addr.phone}">${addr.phone}</a><br>
-                Address: ${addr.address}`;
-            if (addr.date) {
-                popupContent += `<br>Date: <strong>${addr.date}</strong>`;
-            }
-            marker.bindPopup(popupContent, {autoPan: true});
-
-            markers.push(marker);
-
-            // Sidebar legend entry
-            var li = document.createElement('li');
-            let monthClass = getMonthClass(addr.date);
-            li.classList.add(monthClass);
-            li.innerHTML =
-                (addr.date ? `<span class="legend-date">${addr.date}</span>` : '') +
-                `<span>${addr.name}</span>`;
-
-            // Map marker <-> list item linkage
-            markerToLi.set(marker, li);
-            liToMarker.set(li, marker);
-
-            // -- SIDEBAR EVENTS --
-            li.onmouseenter = function() {
-                highlightMarkerAndLi(marker, li);
-                openPopup(marker);
-            };
-            li.onmouseleave = function() {
-                unhighlightAll();
-                closePopup();
-            };
-            li.onclick = function(e) {
-                highlightMarkerAndLi(marker, li);
-                openPopup(marker);
-            };
-
-            // -- MARKER EVENTS --
-            marker.on('popupclose', function() {
-                unhighlightAll();
-            });
-            marker.on('click', function(e) {
-                highlightMarkerAndLi(marker, li);
-                openPopup(marker);
-            });
-            marker.on('mouseover', function() {
-                highlightMarkerAndLi(marker, li);
-                openPopup(marker);
-            });
-            marker.on('mouseout', function() {
-                unhighlightAll();
-                closePopup();
-            });
-
-            locationList.appendChild(li);
-        });
-
-        function highlightMarkerAndLi(marker, li) {
-            document.querySelectorAll('#sidebar li').forEach(function(el) {
-                el.classList.remove('active');
-            });
-            li.classList.add('active');
-            document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
-                icon.classList.remove('selected');
-            });
-            if (marker._icon) marker._icon.classList.add('selected');
-        }
-
-        function unhighlightAll() {
-            document.querySelectorAll('#sidebar li').forEach(function(el) {
-                el.classList.remove('active');
-            });
-            document.querySelectorAll('.leaflet-marker-icon').forEach(function(icon) {
-                icon.classList.remove('selected');
-            });
-        }
-
-        function openPopup(marker) {
-            // Only open if not already open
-            if (lastOpenedPopup !== marker) {
-                marker.openPopup();
-                lastOpenedPopup = marker;
-            }
-        }
-
-        function closePopup() {
-            if (lastOpenedPopup) {
-                lastOpenedPopup.closePopup();
-                lastOpenedPopup = null;
-            }
-        }
-    </script>
-</body>
-</html>
+toggleBtn.addEventListener('click', function() {
+    sidebar.classList.toggle('sidebar-closed');
+    sidebar.classList.toggle('sidebar-open');
+});
+</script>
