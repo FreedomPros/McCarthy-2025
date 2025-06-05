@@ -2,6 +2,7 @@ const sidebar = document.getElementById('sidebar');
 const toggleBtn = document.getElementById('sidebar-toggle');
 const mapDiv = document.getElementById('map');
 
+// Always keep the toggle at the top-left, whether sidebar is open or closed
 function updateArrow() {
     if (sidebar.classList.contains('sidebar-closed')) {
         toggleBtn.innerHTML = '&#x25B6;'; // ► right arrow, expand
