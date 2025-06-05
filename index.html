@@ -10,10 +10,10 @@
 </head>
 <body>
     <div id="sidebar" class="sidebar-open">
-        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#x25C0;</button>
         <h2>Summer Training 2025</h2>
         <div id="location-list"></div>
     </div>
+    <button id="sidebar-toggle" aria-label="Toggle sidebar">&#x25C0;</button>
     <div id="map" class="map-with-sidebar"></div>
     <!-- Leaflet JS (for map rendering) -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -96,8 +96,6 @@
 
     // --- Helper to parse and sort events chronologically ---
     function parseDateRange(dateStr) {
-        // "June 23 - 24" or "July 3 - 4" or "June 30 - July 1"
-        // Returns: [{month, day}, {month, day}]
         const months = {
             "June": 5,
             "July": 6,
@@ -130,19 +128,16 @@
 
     // --- Organize events by month and sort chronologically ---
     function groupAndSortEvents(events) {
-        // Flatten to add sortKey
         const eventsWithKeys = events.map(event => {
             const range = parseDateRange(event.date);
             let sortKey = 0;
             if (range) {
-                // Use the start date for sorting
                 sortKey = (range[0].monthNum || 0) * 100 + range[0].day;
             }
             return { ...event, sortKey, startMonth: range ? range[0].month : "Unknown" };
         });
         eventsWithKeys.sort((a, b) => a.sortKey - b.sortKey);
 
-        // Group by month for coloring
         const grouped = {};
         eventsWithKeys.forEach(event => {
             if (!grouped[event.startMonth]) grouped[event.startMonth] = [];
@@ -181,18 +176,20 @@
                 itemDiv.className = 'event-item';
                 itemDiv.setAttribute('data-index', `${groupIndex}-${idx}`);
 
-                // Header (name + date)
+                // Header (name on one line, date on next line)
                 const headerDiv = document.createElement('div');
                 headerDiv.className = 'event-header';
                 headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
+                                       <br>
                                        <span class="event-date">${event.date}</span>`;
-                headerDiv.addEventListener('click', function() {
+                headerDiv.addEventListener('click', function(e) {
                     // Collapse others
                     document.querySelectorAll('.event-item').forEach(div => {
                         if (div !== itemDiv) div.classList.remove('expanded');
                     });
                     // Toggle this one
                     itemDiv.classList.toggle('expanded');
+                    e.stopPropagation();
                 });
 
                 // Details (initially hidden)
