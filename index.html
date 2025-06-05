@@ -10,97 +10,30 @@
 </head>
 <body>
     <div id="sidebar" class="sidebar-open">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#x25C0;</button>
         <h2>Summer Training 2025</h2>
         <div id="location-list"></div>
     </div>
-    <button id="sidebar-toggle" aria-label="Toggle sidebar">&#x25C0;</button>
     <div id="map" class="map-with-sidebar"></div>
     <!-- Leaflet JS (for map rendering) -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
     // ---- addresses.js content ----
     const addresses = [
-        {
-            name: "DAUNTLESS",
-            poc: "Casey Mosier",
-            phone: "801-787-2621",
-            address: "15601 Garland Cir. Westminster CA 92683",
-            coords: [33.7436, -117.9677],
-            date: "July 7 - 8"
-        },
-        {
-            name: "MAMBAS",
-            poc: "Cayden Larsen",
-            phone: "970-966-0240",
-            address: "2525 NATOMAS PARK DR. 3RD FLOOR, SUITE 320. SACROMENTO, CA",
-            coords: [38.6313, -121.5051],
-            date: "July 17 - 18"
-        },
-        {
-            name: "UNITED",
-            poc: "Casey / Cam Kendall",
-            phone: "206-554-1489",
-            address: "340 S EAST END AVE. SUITE F. PAMONA, CA. 91766",
-            coords: [34.0551, -117.7497],
-            date: "July 3 - 4"
-        },
-        {
-            name: "THE SPARTANS",
-            poc: "Spencer deavila/ Zak Hattab",
-            phone: "484-401-0077",
-            address: "27141 Hideaway Ave. Santa Clarita, 91351",
-            coords: [34.4264, -118.4842],
-            date: "July 10 - 11"
-        },
-        {
-            name: "MOTION",
-            poc: "Junior Bandeira",
-            phone: "773-501-5285",
-            address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
-            coords: [37.7038, -121.7680],
-            date: "July 21 - 22"
-        },
-        {
-            name: "PRIME",
-            poc: "Hayden Young",
-            phone: "385-219-0979",
-            address: "3536 W Dorothea Ave. Visalia, CA. 93277",
-            coords: [36.2995, -119.3258],
-            date: "July 14 - 15"
-        },
-        {
-            name: "FURY",
-            poc: "Jay Merrifield",
-            phone: "801-336-6924",
-            address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
-            coords: [33.6644, -117.7576],
-            date: "June 26 - 27"
-        },
-        {
-            name: "MOMENTVS",
-            poc: "Cole Sexton & Christian Harrison",
-            phone: "320-339-1204",
-            address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-            coords: [34.0921, -117.5743],
-            date: "June 23 - 24"
-        },
-        {
-            name: "EVOLUTION (BAN)",
-            poc: "Grant Misbach",
-            phone: "(801) 643-9206",
-            address: "13078 Irisbend Ave. Eastvale, CA. 92880",
-            coords: [33.9639, -117.5747],
-            date: "June 30 - July 1"
-        }
+        { name: "DAUNTLESS", poc: "Casey Mosier", phone: "801-787-2621", address: "15601 Garland Cir. Westminster CA 92683", coords: [33.7436, -117.9677], date: "July 7 - 8" },
+        { name: "MAMBAS", poc: "Cayden Larsen", phone: "970-966-0240", address: "2525 NATOMAS PARK DR. 3RD FLOOR, SUITE 320. SACROMENTO, CA", coords: [38.6313, -121.5051], date: "July 17 - 18" },
+        { name: "UNITED", poc: "Casey / Cam Kendall", phone: "206-554-1489", address: "340 S EAST END AVE. SUITE F. PAMONA, CA. 91766", coords: [34.0551, -117.7497], date: "July 3 - 4" },
+        { name: "THE SPARTANS", poc: "Spencer deavila/ Zak Hattab", phone: "484-401-0077", address: "27141 Hideaway Ave. Santa Clarita, 91351", coords: [34.4264, -118.4842], date: "July 10 - 11" },
+        { name: "MOTION", poc: "Junior Bandeira", phone: "773-501-5285", address: "6144 Industrial Way. Suite B. Livermore, CA. 94551", coords: [37.7038, -121.7680], date: "July 21 - 22" },
+        { name: "PRIME", poc: "Hayden Young", phone: "385-219-0979", address: "3536 W Dorothea Ave. Visalia, CA. 93277", coords: [36.2995, -119.3258], date: "July 14 - 15" },
+        { name: "FURY", poc: "Jay Merrifield", phone: "801-336-6924", address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618", coords: [33.6644, -117.7576], date: "June 26 - 27" },
+        { name: "MOMENTVS", poc: "Cole Sexton & Christian Harrison", phone: "320-339-1204", address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730", coords: [34.0921, -117.5743], date: "June 23 - 24" },
+        { name: "EVOLUTION (BAN)", poc: "Grant Misbach", phone: "(801) 643-9206", address: "13078 Irisbend Ave. Eastvale, CA. 92880", coords: [33.9639, -117.5747], date: "June 30 - July 1" }
     ];
 
     // --- Helper to parse and sort events chronologically ---
     function parseDateRange(dateStr) {
-        const months = {
-            "June": 5,
-            "July": 6,
-            "August": 7
-        };
+        const months = { "June": 5, "July": 6, "August": 7 };
         const parts = dateStr.split("-");
         if (parts.length === 2) {
             const [startStr, endStr] = parts;
@@ -148,12 +81,7 @@
 
     // --- Generate the sidebar HTML ---
     function renderSidebar() {
-        const colors = {
-            "June": "#f9f9ef",
-            "July": "#eef7fa",
-            "August": "#f7eef9",
-            "Unknown": "#f5f5f5"
-        };
+        const colors = { "June": "#f9f9ef", "July": "#eef7fa", "August": "#f7eef9", "Unknown": "#f5f5f5" };
         const grouped = groupAndSortEvents(addresses);
         const container = document.getElementById('location-list');
         container.innerHTML = '';
@@ -180,7 +108,6 @@
                 const headerDiv = document.createElement('div');
                 headerDiv.className = 'event-header';
                 headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
-                                       <br>
                                        <span class="event-date">${event.date}</span>`;
                 headerDiv.addEventListener('click', function(e) {
                     // Collapse others
