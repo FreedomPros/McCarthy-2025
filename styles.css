@@ -1,82 +1,231 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-}
-#sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 320px;
-    max-width: 90vw;
-    height: 100%;
-    background: #fff;
-    border-right: 1px solid #ccc;
-    overflow-y: auto;
-    z-index: 1000;
-    transition: transform 0.3s;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-    padding-top: 0;
-}
-#sidebar.sidebar-closed {
-    transform: translateX(-100%);
-}
-#sidebar-toggle {
-    position: absolute;
-    top: 50%;
-    right: -24px;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 48px;
-    background: #f8f8f8;
-    border: 2px solid #aaa;
-    border-radius: 0 8px 8px 0;
-    font-size: 2em;
-    cursor: pointer;
-    z-index: 1100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.15);
-    color: #333;
-    outline: none;
-}
-#sidebar h2 {
-    margin: 24px 16px 16px 16px;
-}
-#location-list {
-    list-style: none;
-    padding: 0 16px 16px 16px;
-    margin: 0;
-}
-#location-list li {
-    margin-bottom: 18px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #eee;
-    font-size: 1em;
-}
-#map {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    transition: left 0.3s;
-}
-.map-with-sidebar {
-    left: 320px;
-}
-@media (max-width: 700px) {
-    #sidebar {
-        width: 80vw;
-        max-width: 90vw;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Summer Training 2025 Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Leaflet CSS (for map rendering) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <div id="sidebar" class="sidebar-open">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#x25C0;</button>
+        <h2>Summer Training 2025</h2>
+        <div id="location-list"></div>
+    </div>
+    <div id="map" class="map-with-sidebar"></div>
+    <!-- Leaflet JS (for map rendering) -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+    // ---- addresses.js content ----
+    const addresses = [
+        {
+            name: "DAUNTLESS",
+            poc: "Casey Mosier",
+            phone: "801-787-2621",
+            address: "15601 Garland Cir. Westminster CA 92683",
+            coords: [33.7436, -117.9677],
+            date: "July 7 - 8"
+        },
+        {
+            name: "MAMBAS",
+            poc: "Cayden Larsen",
+            phone: "970-966-0240",
+            address: "2525 NATOMAS PARK DR. 3RD FLOOR, SUITE 320. SACROMENTO, CA",
+            coords: [38.6313, -121.5051],
+            date: "July 17 - 18"
+        },
+        {
+            name: "UNITED",
+            poc: "Casey / Cam Kendall",
+            phone: "206-554-1489",
+            address: "340 S EAST END AVE. SUITE F. PAMONA, CA. 91766",
+            coords: [34.0551, -117.7497],
+            date: "July 3 - 4"
+        },
+        {
+            name: "THE SPARTANS",
+            poc: "Spencer deavila/ Zak Hattab",
+            phone: "484-401-0077",
+            address: "27141 Hideaway Ave. Santa Clarita, 91351",
+            coords: [34.4264, -118.4842],
+            date: "July 10 - 11"
+        },
+        {
+            name: "MOTION",
+            poc: "Junior Bandeira",
+            phone: "773-501-5285",
+            address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
+            coords: [37.7038, -121.7680],
+            date: "July 21 - 22"
+        },
+        {
+            name: "PRIME",
+            poc: "Hayden Young",
+            phone: "385-219-0979",
+            address: "3536 W Dorothea Ave. Visalia, CA. 93277",
+            coords: [36.2995, -119.3258],
+            date: "July 14 - 15"
+        },
+        {
+            name: "FURY",
+            poc: "Jay Merrifield",
+            phone: "801-336-6924",
+            address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
+            coords: [33.6644, -117.7576],
+            date: "June 26 - 27"
+        },
+        {
+            name: "MOMENTVS",
+            poc: "Cole Sexton & Christian Harrison",
+            phone: "320-339-1204",
+            address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+            coords: [34.0921, -117.5743],
+            date: "June 23 - 24"
+        },
+        {
+            name: "EVOLUTION (BAN)",
+            poc: "Grant Misbach",
+            phone: "(801) 643-9206",
+            address: "13078 Irisbend Ave. Eastvale, CA. 92880",
+            coords: [33.9639, -117.5747],
+            date: "June 30 - July 1"
+        }
+    ];
+
+    // --- Helper to parse and sort events chronologically ---
+    function parseDateRange(dateStr) {
+        // "June 23 - 24" or "July 3 - 4" or "June 30 - July 1"
+        // Returns: [{month, day}, {month, day}]
+        const months = {
+            "June": 5,
+            "July": 6,
+            "August": 7
+        };
+        const parts = dateStr.split("-");
+        if (parts.length === 2) {
+            const [startStr, endStr] = parts;
+            const startMatch = startStr.trim().match(/([A-Za-z]+)\s+(\d+)/);
+            if (!startMatch) return null;
+            const startMonth = startMatch[1];
+            const startDay = parseInt(startMatch[2], 10);
+
+            const endMatch = endStr.trim().match(/([A-Za-z]+)?\s*(\d+)/);
+            let endMonth = startMonth;
+            let endDay;
+            if (endMatch) {
+                if (endMatch[1]) {
+                    endMonth = endMatch[1];
+                }
+                endDay = parseInt(endMatch[2], 10);
+            }
+            return [
+                { month: startMonth, monthNum: months[startMonth], day: startDay },
+                { month: endMonth, monthNum: months[endMonth], day: endDay }
+            ];
+        }
+        return null;
     }
-    .map-with-sidebar {
-        left: 80vw;
+
+    // --- Organize events by month and sort chronologically ---
+    function groupAndSortEvents(events) {
+        // Flatten to add sortKey
+        const eventsWithKeys = events.map(event => {
+            const range = parseDateRange(event.date);
+            let sortKey = 0;
+            if (range) {
+                // Use the start date for sorting
+                sortKey = (range[0].monthNum || 0) * 100 + range[0].day;
+            }
+            return { ...event, sortKey, startMonth: range ? range[0].month : "Unknown" };
+        });
+        eventsWithKeys.sort((a, b) => a.sortKey - b.sortKey);
+
+        // Group by month for coloring
+        const grouped = {};
+        eventsWithKeys.forEach(event => {
+            if (!grouped[event.startMonth]) grouped[event.startMonth] = [];
+            grouped[event.startMonth].push(event);
+        });
+        return grouped;
     }
-}
+
+    // --- Generate the sidebar HTML ---
+    function renderSidebar() {
+        const colors = {
+            "June": "#f9f9ef",
+            "July": "#eef7fa",
+            "August": "#f7eef9",
+            "Unknown": "#f5f5f5"
+        };
+        const grouped = groupAndSortEvents(addresses);
+        const container = document.getElementById('location-list');
+        container.innerHTML = '';
+
+        let groupIndex = 0;
+        for (const month of Object.keys(grouped)) {
+            const events = grouped[month];
+            const monthDiv = document.createElement('div');
+            monthDiv.className = 'month-group';
+            monthDiv.style.backgroundColor = colors[month] || "#f8f8f8";
+
+            // Month label
+            const monthLabel = document.createElement('div');
+            monthLabel.className = 'month-label';
+            monthLabel.textContent = month;
+            monthDiv.appendChild(monthLabel);
+
+            events.forEach((event, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'event-item';
+                itemDiv.setAttribute('data-index', `${groupIndex}-${idx}`);
+
+                // Header (name + date)
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'event-header';
+                headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
+                                       <span class="event-date">${event.date}</span>`;
+                headerDiv.addEventListener('click', function() {
+                    // Collapse others
+                    document.querySelectorAll('.event-item').forEach(div => {
+                        if (div !== itemDiv) div.classList.remove('expanded');
+                    });
+                    // Toggle this one
+                    itemDiv.classList.toggle('expanded');
+                });
+
+                // Details (initially hidden)
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'event-details';
+                detailsDiv.innerHTML = `
+                    <div><strong>POC:</strong> ${event.poc}</div>
+                    <div><strong>Phone:</strong> ${event.phone}</div>
+                    <div><strong>Address:</strong> ${event.address}</div>
+                `;
+
+                itemDiv.appendChild(headerDiv);
+                itemDiv.appendChild(detailsDiv);
+                monthDiv.appendChild(itemDiv);
+            });
+            container.appendChild(monthDiv);
+            groupIndex++;
+        }
+    }
+
+    renderSidebar();
+    </script>
+    <script src="sidebar-toggle.js"></script>
+    <script>
+    // ---- MAP INITIALIZATION (Leaflet example) ----
+    var map = L.map('map').setView([36.7783, -119.4179], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    addresses.forEach(loc => {
+      L.marker(loc.coords).addTo(map)
+        .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
+    });
+    </script>
+</body>
+</html>
