@@ -28,7 +28,7 @@
             date: "June 26 - 27"
         },
         {
-            name: "EVOLUTION (BAN) (20)",
+            name: "BAN, UNITED, & FORGE (65-75)",
             poc: "Grant Misbach",
             phone: "(801) 643-9206",
             address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
@@ -68,7 +68,7 @@
             date: "July 17 - 18"
         },
         {
-            name: "MOMENTVS",
+            name: "MOMENTVS (70-80)",
             poc: "Cole Sexton & Christian Harrison",
             phone: "320-339-1204",
             address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
@@ -154,7 +154,8 @@
       markerRefs.push(marker);
 
       marker.on('click', function() {
-        highlightMarker(idx, false); // don't pan
+        highlightMarker(idx);
+        // Highlight the corresponding sidebar event
         document.querySelectorAll('.event-item').forEach((div, i) => {
             if (i === idx) {
                 div.classList.add('expanded');
@@ -166,13 +167,12 @@
       });
     });
 
-    function highlightMarker(idx, shouldPan = false) {
+    function highlightMarker(idx) {
         markerRefs.forEach((marker, i) => {
             if (i === idx) {
                 marker.setIcon(redIcon);
                 marker.setZIndexOffset(1000);
                 marker.openPopup();
-                // NO pan or zoom
             } else {
                 marker.setIcon(blueIcon);
                 marker.setZIndexOffset(0);
@@ -200,7 +200,7 @@
             monthLabel.textContent = month;
             monthDiv.appendChild(monthLabel);
 
-            events.forEach((event, idx) => {
+            events.forEach((event, idx2) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'event-item';
                 itemDiv.setAttribute('data-index', `${eventIdx}`);
@@ -218,7 +218,7 @@
                     e.stopPropagation();
 
                     // Highlight the corresponding marker and open popup (no pan/zoom)
-                    highlightMarker(eventIdx, false);
+                    highlightMarker(eventIdx);
                 });
 
                 const detailsDiv = document.createElement('div');
