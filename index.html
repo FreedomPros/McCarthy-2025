@@ -5,8 +5,26 @@
     <title>Summer Training 2025 Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <!-- Leaflet CSS (for map rendering) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Basic styles and sidebar toggle for demo */
+        body, html { margin: 0; padding: 0; height: 100%; }
+        #map { position: absolute; top: 0; right: 0; bottom: 0; left: 300px; }
+        #sidebar { width: 300px; position: absolute; top: 0; left: 0; bottom: 0; background: #fff; border-right: 1px solid #ccc; overflow-y: auto; transition: left 0.3s; z-index: 1001;}
+        #sidebar.sidebar-closed { left: -300px; }
+        #sidebar-toggle { position: absolute; top: 10px; right: -25px; z-index: 1002; background: #fff; border: 1px solid #ccc; border-radius: 0 5px 5px 0; width: 25px; height: 40px; cursor: pointer; }
+        #sidebar.sidebar-closed #sidebar-toggle { right: -25px; transform: rotate(180deg);}
+        #sidebar h2 { margin: 20px 0 10px 20px; }
+        .month-group { margin-bottom: 10px; border-radius: 8px; padding-bottom: 5px;}
+        .month-label { font-weight: bold; padding: 8px 16px 4px 16px;}
+        .event-item { margin: 6px 10px; border-radius: 6px; background: #f8f8fa; box-shadow: 0 1px 2px #eee;}
+        .event-header { cursor: pointer; padding: 10px 14px 7px 14px; }
+        .event-name { font-weight: bold; color: #173a5e; display: block;}
+        .event-date { font-size: 0.92em; color: #3a5570; display: block; margin-top: 2px;}
+        .event-details { display: none; padding: 0 14px 10px 14px; font-size: 0.95em;}
+        .event-item.expanded .event-details { display: block; }
+        .event-item.expanded { border: 2px solid #0074d9; background: #f0faff;}
+    </style>
 </head>
 <body>
     <div id="sidebar" class="sidebar-open">
@@ -14,10 +32,10 @@
         <h2>Summer Training 2025</h2>
         <div id="location-list"></div>
     </div>
-    <div id="map" class="map-with-sidebar"></div>
-    <!-- Leaflet JS (for map rendering) -->
+    <div id="map"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
+    // DATA
     const addresses = [
         {
             name: "FURY (150 - 200)",
@@ -77,6 +95,7 @@
         }
     ];
 
+    // SORT AND GROUP
     function parseDateRange(dateStr) {
         const months = { "June": 5, "July": 6, "August": 7 };
         const parts = dateStr.split("-");
@@ -123,7 +142,7 @@
         return grouped;
     }
 
-    // Marker icons
+    // ICONS
     const blueIcon = new L.Icon({
         iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
         iconSize: [25, 41],
@@ -141,51 +160,22 @@
         shadowSize: [55, 55]
     });
 
+    // MAP
     var map = L.map('map').setView([36.7783, -119.4179], 6);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    // ---- RENDER SIDEBAR and STORE ORDER ----
     let markerRefs = [];
-    addresses.forEach((loc, idx) => {
-      const marker = L.marker(loc.coords, { icon: blueIcon })
-        .addTo(map)
-        .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
-      markerRefs.push(marker);
-
-      marker.on('click', function() {
-        highlightMarker(idx);
-        // Highlight the corresponding sidebar event
-        document.querySelectorAll('.event-item').forEach((div, i) => {
-            if (i === idx) {
-                div.classList.add('expanded');
-                div.scrollIntoView({ behavior: "smooth", block: "center" });
-            } else {
-                div.classList.remove('expanded');
-            }
-        });
-      });
-    });
-
-    function highlightMarker(idx) {
-        markerRefs.forEach((marker, i) => {
-            if (i === idx) {
-                marker.setIcon(redIcon);
-                marker.setZIndexOffset(1000);
-                marker.openPopup();
-            } else {
-                marker.setIcon(blueIcon);
-                marker.setZIndexOffset(0);
-                marker.closePopup();
-            }
-        });
-    }
+    let sidebarEventDivs = []; // index-matched to markerRefs
 
     function renderSidebar() {
         const colors = { "June": "#f9f9ef", "July": "#eef7fa", "August": "#f7eef9", "Unknown": "#f5f5f5" };
         const grouped = groupAndSortEvents(addresses);
         const container = document.getElementById('location-list');
         container.innerHTML = '';
+        sidebarEventDivs = [];
 
         let groupIndex = 0;
         let eventIdx = 0;
@@ -216,9 +206,7 @@
                     });
                     itemDiv.classList.toggle('expanded');
                     e.stopPropagation();
-
-                    // Highlight the corresponding marker and open popup (no pan/zoom)
-                    highlightMarker(eventIdx);
+                    highlightMarker(eventIdx, true);
                 });
 
                 const detailsDiv = document.createElement('div');
@@ -232,7 +220,7 @@
                 itemDiv.appendChild(headerDiv);
                 itemDiv.appendChild(detailsDiv);
                 monthDiv.appendChild(itemDiv);
-
+                sidebarEventDivs.push(itemDiv);
                 eventIdx++;
             });
             container.appendChild(monthDiv);
@@ -240,8 +228,87 @@
         }
     }
 
+    // --- MAIN INIT ---
     renderSidebar();
+
+    // Marker creation must match sidebar order exactly!
+    function getOrderedEvents() {
+        // Flatten grouped/sorted events to a single array for marker order to match sidebar
+        const grouped = groupAndSortEvents(addresses);
+        let ordered = [];
+        for (const month of Object.keys(grouped)) {
+            for (const event of grouped[month]) {
+                ordered.push(event);
+            }
+        }
+        return ordered;
+    }
+
+    let orderedEvents = getOrderedEvents();
+    markerRefs = [];
+    for (let i = 0; i < orderedEvents.length; i++) {
+        const loc = orderedEvents[i];
+        const marker = L.marker(loc.coords, { icon: blueIcon })
+            .addTo(map)
+            .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
+
+        marker.on('click', function() {
+            highlightMarker(i, false);
+            document.querySelectorAll('.event-item').forEach((div, idx) => {
+                if (idx === i) {
+                    div.classList.add('expanded');
+                    div.scrollIntoView({ behavior: "smooth", block: "center" });
+                } else {
+                    div.classList.remove('expanded');
+                }
+            });
+        });
+        markerRefs.push(marker);
+    }
+
+    // --- Highlight logic (called from both marker and key clicks) ---
+    function highlightMarker(idx, fromSidebar) {
+        markerRefs.forEach((marker, i) => {
+            if (i === idx) {
+                marker.setIcon(redIcon);
+                marker.setZIndexOffset(1000);
+                marker.openPopup();
+            } else {
+                marker.setIcon(blueIcon);
+                marker.setZIndexOffset(0);
+                marker.closePopup();
+            }
+        });
+        // Also highlight sidebar
+        sidebarEventDivs.forEach((div, i) => {
+            if (i === idx) {
+                div.classList.add('expanded');
+                if (!fromSidebar) div.scrollIntoView({ behavior: "smooth", block: "center" });
+            } else {
+                div.classList.remove('expanded');
+            }
+        });
+    }
+
+    // --- SIDEBAR TOGGLE ---
+    // Handles arrow re-expanding/collapsing
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    let sidebarOpen = true;
+    function updateSidebarToggleArrow() {
+        sidebarToggle.innerHTML = sidebarOpen ? "&#x25C0;" : "&#x25B6;";
+    }
+    sidebarToggle.addEventListener('click', function() {
+        sidebarOpen = !sidebarOpen;
+        if (sidebarOpen) {
+            sidebar.classList.remove('sidebar-closed');
+        } else {
+            sidebar.classList.add('sidebar-closed');
+        }
+        updateSidebarToggleArrow();
+    });
+    updateSidebarToggleArrow();
+
     </script>
-    <script src="sidebar-toggle.js"></script>
 </body>
 </html>
