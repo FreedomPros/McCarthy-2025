@@ -19,29 +19,34 @@
             overflow-y: auto;
             transition: transform 0.3s cubic-bezier(.4,2.08,.55,.44);
             z-index: 1001;
+            box-shadow: 2px 0 8px #0001;
         }
         #sidebar.sidebar-closed {
             transform: translateX(-100%);
         }
-        #sidebar-toggle {
+        #sidebar-toggle-btn {
             position: absolute;
-            top: 14px;
-            right: -28px;
+            top: 18px;
+            left: 325px;
+            width: 34px;
+            height: 44px;
             background: #fff;
             border: 1px solid #ccc;
             border-left: none;
             border-radius: 0 6px 6px 0;
-            width: 28px;
-            height: 44px;
+            font-size: 22px;
             cursor: pointer;
-            z-index: 1002;
-            font-size: 21px;
+            z-index: 1005;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 2px 0 8px #0001;
         }
-        #sidebar.sidebar-closed #sidebar-toggle {
-            right: -28px;
+        #sidebar.sidebar-closed + #sidebar-toggle-btn {
+            left: 5px;
+            border-radius: 6px;
+            border-left: 1px solid #ccc;
+            border-right: none;
         }
         #sidebar h2 {
             margin: 24px 0 12px 28px;
@@ -59,21 +64,23 @@
         .event-details { display: none; padding: 0 16px 13px 16px; font-size: 0.97em;}
         .event-item.expanded .event-details { display: block; }
         .event-item.expanded { border: 2px solid #0074d9; background: #e4f4ff;}
-        #map { position: absolute; top: 0; left: 320px; right: 0; bottom: 0; }
-        #sidebar.sidebar-closed + #map { left: 0; }
+        #map { position: absolute; top: 0; left: 320px; right: 0; bottom: 0; transition: left 0.3s;}
+        #sidebar.sidebar-closed ~ #map { left: 0; }
+        #sidebar.sidebar-closed ~ #sidebar-toggle-btn { left: 5px; border-radius: 6px; border-left: 1px solid #ccc; border-right: none;}
         @media (max-width: 700px) {
             #sidebar { width: 90vw; }
-            #sidebar.sidebar-closed + #map { left: 0; }
             #map { left: 90vw; }
+            #sidebar.sidebar-closed ~ #map { left: 0; }
+            #sidebar-toggle-btn { left: 90vw; }
         }
     </style>
 </head>
 <body>
     <div id="sidebar" class="sidebar-open">
-        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#x25C0;</button>
         <h2>Summer Training 2025</h2>
         <div id="location-list"></div>
     </div>
+    <button id="sidebar-toggle-btn" title="Hide/show key">&laquo;</button>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
@@ -137,7 +144,6 @@
         }
     ];
 
-    // Helper to parse and sort events chronologically
     function parseDateRange(dateStr) {
         const months = { "June": 5, "July": 6, "August": 7 };
         const parts = dateStr.split("-");
@@ -162,7 +168,6 @@
         }
         return null;
     }
-
     function groupAndSortEvents(events) {
         const eventsWithKeys = events.map(event => {
             const range = parseDateRange(event.date);
@@ -191,7 +196,7 @@
         shadowSize: [41, 41]
     });
     const redIcon = new L.Icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-red.png',
+        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
         iconRetinaUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
         iconSize: [36, 55],
         iconAnchor: [18, 55],
@@ -208,7 +213,6 @@
     let markerRefs = [];
     let sidebarEventDivs = [];
 
-    // Helper to flatten ordered events for markers & sidebar
     function getOrderedEvents() {
         const grouped = groupAndSortEvents(addresses);
         let ordered = [];
@@ -220,8 +224,8 @@
         return ordered;
     }
 
-    // Expand and highlight correct sidebar entry, and close others & highlight marker
-    function expandAndHighlight(idx, fromSidebar=false) {
+    // Highlight and expand logic
+    function expandAndHighlight(idx) {
         sidebarEventDivs.forEach((div, i) => {
             if (i === idx) {
                 div.classList.add('expanded');
@@ -242,7 +246,7 @@
         });
     }
 
-    // --- Build sidebar and store sidebarEventDivs in the same order as markers ---
+    // Sidebar render
     function renderSidebar() {
         const colors = { "June": "#f9f9ef", "July": "#eef7fa", "August": "#f7eef9", "Unknown": "#f5f5f5" };
         const grouped = groupAndSortEvents(addresses);
@@ -272,7 +276,7 @@
                                        <span class="event-date">${event.date}</span>`;
 
                 headerDiv.addEventListener('click', function(e) {
-                    expandAndHighlight(idx, true);
+                    expandAndHighlight(idx);
                 });
 
                 const detailsDiv = document.createElement('div');
@@ -293,9 +297,9 @@
         }
     }
 
-    // --- Setup sidebar and markers ---
     renderSidebar();
 
+    // Markers (in order)
     let orderedEvents = getOrderedEvents();
     markerRefs = [];
     for (let i = 0; i < orderedEvents.length; i++) {
@@ -306,28 +310,28 @@
         markerRefs.push(marker);
 
         marker.on('click', function() {
-            expandAndHighlight(i, false);
+            expandAndHighlight(i);
         });
     }
 
-    // --- SIDEBAR TOGGLE ---
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
+    // Sidebar toggle (button next to sidebar)
+    const sidebarEl = document.getElementById('sidebar');
+    const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
     let sidebarOpen = true;
     function updateSidebarToggleArrow() {
-        sidebarToggle.innerHTML = sidebarOpen ? "&#x25C0;" : "&#x25B6;";
+        sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
+        sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
     }
-    sidebarToggle.addEventListener('click', function() {
+    sidebarToggleBtn.addEventListener('click', function() {
         sidebarOpen = !sidebarOpen;
         if (sidebarOpen) {
-            sidebar.classList.remove('sidebar-closed');
+            sidebarEl.classList.remove('sidebar-closed');
         } else {
-            sidebar.classList.add('sidebar-closed');
+            sidebarEl.classList.add('sidebar-closed');
         }
         updateSidebarToggleArrow();
     });
     updateSidebarToggleArrow();
-
     </script>
 </body>
 </html>
