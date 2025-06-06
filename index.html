@@ -4,25 +4,68 @@
     <meta charset="UTF-8">
     <title>Summer Training 2025 Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <!-- Minimal CSS for sidebar and map layout -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; }
-        #map { position: absolute; top: 0; right: 0; bottom: 0; left: 300px; }
-        #sidebar { width: 300px; position: absolute; top: 0; left: 0; bottom: 0; background: #fff; border-right: 1px solid #ccc; overflow-y: auto; transition: left 0.3s; z-index: 1001;}
-        #sidebar.sidebar-closed { left: -300px; }
-        #sidebar-toggle { position: absolute; top: 10px; right: -25px; z-index: 1002; background: #fff; border: 1px solid #ccc; border-radius: 0 5px 5px 0; width: 25px; height: 40px; cursor: pointer; }
-        #sidebar.sidebar-closed #sidebar-toggle { right: -25px; transform: rotate(180deg);}
-        #sidebar h2 { margin: 20px 0 10px 20px; }
-        .month-group { margin-bottom: 10px; border-radius: 8px; padding-bottom: 5px;}
-        .month-label { font-weight: bold; padding: 8px 16px 4px 16px;}
-        .event-item { margin: 6px 10px; border-radius: 6px; background: #f8f8fa; box-shadow: 0 1px 2px #eee;}
-        .event-header { cursor: pointer; padding: 10px 14px 7px 14px; }
+        html, body { height: 100%; margin: 0; padding: 0; }
+        #sidebar {
+            width: 320px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            background: #fff;
+            border-right: 1px solid #ccc;
+            overflow-y: auto;
+            transition: transform 0.3s cubic-bezier(.4,2.08,.55,.44);
+            z-index: 1001;
+        }
+        #sidebar.sidebar-closed {
+            transform: translateX(-100%);
+        }
+        #sidebar-toggle {
+            position: absolute;
+            top: 14px;
+            right: -28px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-left: none;
+            border-radius: 0 6px 6px 0;
+            width: 28px;
+            height: 44px;
+            cursor: pointer;
+            z-index: 1002;
+            font-size: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #sidebar.sidebar-closed #sidebar-toggle {
+            right: -28px;
+        }
+        #sidebar h2 {
+            margin: 24px 0 12px 28px;
+            font-size: 1.2em;
+        }
+        #location-list {
+            margin-bottom: 24px;
+        }
+        .month-group { margin-bottom: 12px; border-radius: 8px; padding-bottom: 5px;}
+        .month-label { font-weight: bold; padding: 8px 20px 4px 20px;}
+        .event-item { margin: 7px 10px; border-radius: 7px; background: #f6f6fa; box-shadow: 0 1px 2px #eee; }
+        .event-header { cursor: pointer; padding: 11px 16px 7px 16px; }
         .event-name { font-weight: bold; color: #173a5e; display: block;}
-        .event-date { font-size: 0.92em; color: #3a5570; display: block; margin-top: 2px;}
-        .event-details { display: none; padding: 0 14px 10px 14px; font-size: 0.95em;}
+        .event-date { font-size: 0.94em; color: #3a5570; display: block; margin-top: 2px;}
+        .event-details { display: none; padding: 0 16px 13px 16px; font-size: 0.97em;}
         .event-item.expanded .event-details { display: block; }
-        .event-item.expanded { border: 2px solid #0074d9; background: #f0faff;}
+        .event-item.expanded { border: 2px solid #0074d9; background: #e4f4ff;}
+        #map { position: absolute; top: 0; left: 320px; right: 0; bottom: 0; }
+        #sidebar.sidebar-closed + #map { left: 0; }
+        @media (max-width: 700px) {
+            #sidebar { width: 90vw; }
+            #sidebar.sidebar-closed + #map { left: 0; }
+            #map { left: 90vw; }
+        }
     </style>
 </head>
 <body>
@@ -94,6 +137,7 @@
         }
     ];
 
+    // Helper to parse and sort events chronologically
     function parseDateRange(dateStr) {
         const months = { "June": 5, "July": 6, "August": 7 };
         const parts = dateStr.split("-");
@@ -108,198 +152,9 @@
             let endMonth = startMonth;
             let endDay;
             if (endMatch) {
-                if (endMatch[1]) {
-                    endMonth = endMatch[1];
-                }
+                if (endMatch[1]) endMonth = endMatch[1];
                 endDay = parseInt(endMatch[2], 10);
             }
             return [
                 { month: startMonth, monthNum: months[startMonth], day: startDay },
-                { month: endMonth, monthNum: months[endMonth], day: endDay }
-            ];
-        }
-        return null;
-    }
-
-    function groupAndSortEvents(events) {
-        const eventsWithKeys = events.map(event => {
-            const range = parseDateRange(event.date);
-            let sortKey = 0;
-            if (range) {
-                sortKey = (range[0].monthNum || 0) * 100 + range[0].day;
-            }
-            return { ...event, sortKey, startMonth: range ? range[0].month : "Unknown" };
-        });
-        eventsWithKeys.sort((a, b) => a.sortKey - b.sortKey);
-
-        const grouped = {};
-        eventsWithKeys.forEach(event => {
-            if (!grouped[event.startMonth]) grouped[event.startMonth] = [];
-            grouped[event.startMonth].push(event);
-        });
-        return grouped;
-    }
-
-    // ICONS
-    const blueIcon = new L.Icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-        shadowSize: [41, 41]
-    });
-    const redIcon = new L.Icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-red.png',
-        iconSize: [36, 55],
-        iconAnchor: [18, 55],
-        popupAnchor: [1, -44],
-        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-        shadowSize: [55, 55]
-    });
-
-    var map = L.map('map').setView([36.7783, -119.4179], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    // ---- RENDER SIDEBAR and STORE ORDER ----
-    let markerRefs = [];
-    let sidebarEventDivs = [];
-
-    function renderSidebar(onSidebarClick) {
-        const colors = { "June": "#f9f9ef", "July": "#eef7fa", "August": "#f7eef9", "Unknown": "#f5f5f5" };
-        const grouped = groupAndSortEvents(addresses);
-        const container = document.getElementById('location-list');
-        container.innerHTML = '';
-        sidebarEventDivs = [];
-        let groupIndex = 0;
-        let eventIdx = 0;
-        for (const month of Object.keys(grouped)) {
-            const events = grouped[month];
-            const monthDiv = document.createElement('div');
-            monthDiv.className = 'month-group';
-            monthDiv.style.backgroundColor = colors[month] || "#f8f8f8";
-
-            const monthLabel = document.createElement('div');
-            monthLabel.className = 'month-label';
-            monthLabel.textContent = month;
-            monthDiv.appendChild(monthLabel);
-
-            events.forEach((event, idx2) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'event-item';
-                itemDiv.setAttribute('data-index', `${eventIdx}`);
-
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'event-header';
-                headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
-                                       <span class="event-date">${event.date}</span>`;
-
-                headerDiv.addEventListener('click', function(e) {
-                    // Expand/collapse logic
-                    document.querySelectorAll('.event-item').forEach(div => {
-                        if (div !== itemDiv) div.classList.remove('expanded');
-                    });
-                    // Always expand the clicked one
-                    itemDiv.classList.add('expanded');
-                    e.stopPropagation();
-                    // Highlight the corresponding marker and open popup
-                    if (typeof onSidebarClick === "function") onSidebarClick(eventIdx);
-                });
-
-                const detailsDiv = document.createElement('div');
-                detailsDiv.className = 'event-details';
-                detailsDiv.innerHTML = `
-                    <div><strong>POC:</strong> ${event.poc}</div>
-                    <div><strong>Phone:</strong> ${event.phone}</div>
-                    <div><strong>Address:</strong> ${event.address}</div>
-                `;
-
-                itemDiv.appendChild(headerDiv);
-                itemDiv.appendChild(detailsDiv);
-                monthDiv.appendChild(itemDiv);
-                sidebarEventDivs.push(itemDiv);
-                eventIdx++;
-            });
-            container.appendChild(monthDiv);
-            groupIndex++;
-        }
-    }
-
-    // MAIN INIT
-    // Render sidebar and pass in marker highlight function
-    renderSidebar(function(idx) {
-        highlightMarker(idx, true);
-    });
-
-    // Marker creation must match sidebar order exactly!
-    function getOrderedEvents() {
-        const grouped = groupAndSortEvents(addresses);
-        let ordered = [];
-        for (const month of Object.keys(grouped)) {
-            for (const event of grouped[month]) {
-                ordered.push(event);
-            }
-        }
-        return ordered;
-    }
-
-    let orderedEvents = getOrderedEvents();
-    markerRefs = [];
-    for (let i = 0; i < orderedEvents.length; i++) {
-        const loc = orderedEvents[i];
-        const marker = L.marker(loc.coords, { icon: blueIcon })
-            .addTo(map)
-            .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
-
-        marker.on('click', function() {
-            highlightMarker(i, false);
-        });
-        markerRefs.push(marker);
-    }
-
-    // --- Highlight logic (called from both marker and key clicks) ---
-    function highlightMarker(idx, fromSidebar) {
-        markerRefs.forEach((marker, i) => {
-            if (i === idx) {
-                marker.setIcon(redIcon);
-                marker.setZIndexOffset(1000);
-                marker.openPopup();
-            } else {
-                marker.setIcon(blueIcon);
-                marker.setZIndexOffset(0);
-                marker.closePopup();
-            }
-        });
-        sidebarEventDivs.forEach((div, i) => {
-            if (i === idx) {
-                div.classList.add('expanded');
-                if (!fromSidebar) div.scrollIntoView({ behavior: "smooth", block: "center" });
-            } else {
-                div.classList.remove('expanded');
-            }
-        });
-    }
-
-    // --- SIDEBAR TOGGLE ---
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    let sidebarOpen = true;
-    function updateSidebarToggleArrow() {
-        sidebarToggle.innerHTML = sidebarOpen ? "&#x25C0;" : "&#x25B6;";
-    }
-    sidebarToggle.addEventListener('click', function() {
-        sidebarOpen = !sidebarOpen;
-        if (sidebarOpen) {
-            sidebar.classList.remove('sidebar-closed');
-        } else {
-            sidebar.classList.add('sidebar-closed');
-        }
-        updateSidebarToggleArrow();
-    });
-    updateSidebarToggleArrow();
-
-    </script>
-</body>
-</html>
+                { month: endMonth, monthNum:
