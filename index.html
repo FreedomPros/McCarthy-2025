@@ -123,4 +123,183 @@
 
     function groupAndSortEvents(events) {
         const eventsWithKeys = events.map(event => {
-            const range = parseDateRange(event.date
+            const range = parseDateRange(event.date);
+            let sortKey = 0;
+            if (range) {
+                sortKey = (range[0].monthNum || 0) * 100 + range[0].day;
+            }
+            return { ...event, sortKey, startMonth: range ? range[0].month : "Unknown" };
+        });
+        eventsWithKeys.sort((a, b) => a.sortKey - b.sortKey);
+
+        const grouped = {};
+        eventsWithKeys.forEach(event => {
+            if (!grouped[event.startMonth]) grouped[event.startMonth] = [];
+            grouped[event.startMonth].push(event);
+        });
+        return grouped;
+    }
+
+    // ICONS
+    const blueIcon = new L.Icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+    const redIcon = new L.Icon({
+        iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-red.png',
+        iconSize: [36, 55],
+        iconAnchor: [18, 55],
+        popupAnchor: [1, -44],
+        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+        shadowSize: [55, 55]
+    });
+
+    var map = L.map('map').setView([36.7783, -119.4179], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // ---- RENDER SIDEBAR and STORE ORDER ----
+    let markerRefs = [];
+    let sidebarEventDivs = [];
+
+    function renderSidebar(onSidebarClick) {
+        const colors = { "June": "#f9f9ef", "July": "#eef7fa", "August": "#f7eef9", "Unknown": "#f5f5f5" };
+        const grouped = groupAndSortEvents(addresses);
+        const container = document.getElementById('location-list');
+        container.innerHTML = '';
+        sidebarEventDivs = [];
+        let groupIndex = 0;
+        let eventIdx = 0;
+        for (const month of Object.keys(grouped)) {
+            const events = grouped[month];
+            const monthDiv = document.createElement('div');
+            monthDiv.className = 'month-group';
+            monthDiv.style.backgroundColor = colors[month] || "#f8f8f8";
+
+            const monthLabel = document.createElement('div');
+            monthLabel.className = 'month-label';
+            monthLabel.textContent = month;
+            monthDiv.appendChild(monthLabel);
+
+            events.forEach((event, idx2) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'event-item';
+                itemDiv.setAttribute('data-index', `${eventIdx}`);
+
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'event-header';
+                headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
+                                       <span class="event-date">${event.date}</span>`;
+
+                headerDiv.addEventListener('click', function(e) {
+                    // Expand/collapse logic
+                    document.querySelectorAll('.event-item').forEach(div => {
+                        if (div !== itemDiv) div.classList.remove('expanded');
+                    });
+                    // Always expand the clicked one
+                    itemDiv.classList.add('expanded');
+                    e.stopPropagation();
+                    // Highlight the corresponding marker and open popup
+                    if (typeof onSidebarClick === "function") onSidebarClick(eventIdx);
+                });
+
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'event-details';
+                detailsDiv.innerHTML = `
+                    <div><strong>POC:</strong> ${event.poc}</div>
+                    <div><strong>Phone:</strong> ${event.phone}</div>
+                    <div><strong>Address:</strong> ${event.address}</div>
+                `;
+
+                itemDiv.appendChild(headerDiv);
+                itemDiv.appendChild(detailsDiv);
+                monthDiv.appendChild(itemDiv);
+                sidebarEventDivs.push(itemDiv);
+                eventIdx++;
+            });
+            container.appendChild(monthDiv);
+            groupIndex++;
+        }
+    }
+
+    // MAIN INIT
+    // Render sidebar and pass in marker highlight function
+    renderSidebar(function(idx) {
+        highlightMarker(idx, true);
+    });
+
+    // Marker creation must match sidebar order exactly!
+    function getOrderedEvents() {
+        const grouped = groupAndSortEvents(addresses);
+        let ordered = [];
+        for (const month of Object.keys(grouped)) {
+            for (const event of grouped[month]) {
+                ordered.push(event);
+            }
+        }
+        return ordered;
+    }
+
+    let orderedEvents = getOrderedEvents();
+    markerRefs = [];
+    for (let i = 0; i < orderedEvents.length; i++) {
+        const loc = orderedEvents[i];
+        const marker = L.marker(loc.coords, { icon: blueIcon })
+            .addTo(map)
+            .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
+
+        marker.on('click', function() {
+            highlightMarker(i, false);
+        });
+        markerRefs.push(marker);
+    }
+
+    // --- Highlight logic (called from both marker and key clicks) ---
+    function highlightMarker(idx, fromSidebar) {
+        markerRefs.forEach((marker, i) => {
+            if (i === idx) {
+                marker.setIcon(redIcon);
+                marker.setZIndexOffset(1000);
+                marker.openPopup();
+            } else {
+                marker.setIcon(blueIcon);
+                marker.setZIndexOffset(0);
+                marker.closePopup();
+            }
+        });
+        sidebarEventDivs.forEach((div, i) => {
+            if (i === idx) {
+                div.classList.add('expanded');
+                if (!fromSidebar) div.scrollIntoView({ behavior: "smooth", block: "center" });
+            } else {
+                div.classList.remove('expanded');
+            }
+        });
+    }
+
+    // --- SIDEBAR TOGGLE ---
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    let sidebarOpen = true;
+    function updateSidebarToggleArrow() {
+        sidebarToggle.innerHTML = sidebarOpen ? "&#x25C0;" : "&#x25B6;";
+    }
+    sidebarToggle.addEventListener('click', function() {
+        sidebarOpen = !sidebarOpen;
+        if (sidebarOpen) {
+            sidebar.classList.remove('sidebar-closed');
+        } else {
+            sidebar.classList.add('sidebar-closed');
+        }
+        updateSidebarToggleArrow();
+    });
+    updateSidebarToggleArrow();
+
+    </script>
+</body>
+</html>
