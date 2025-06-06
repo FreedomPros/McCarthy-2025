@@ -1,20 +1,22 @@
-const sidebar = document.getElementById('sidebar');
-const toggleBtn = document.getElementById('sidebar-toggle');
-const mapDiv = document.getElementById('map');
+// Only handles sidebar open/close, nothing else!
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebarEl = document.getElementById('sidebar');
+    const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+    if (!sidebarEl || !sidebarToggleBtn) return;
 
-// Always keep the toggle at the top-left, whether sidebar is open or closed
-function updateArrow() {
-    if (sidebar.classList.contains('sidebar-closed')) {
-        toggleBtn.innerHTML = '&#x25B6;'; // ► right arrow, expand
-        mapDiv.classList.remove('map-with-sidebar');
-    } else {
-        toggleBtn.innerHTML = '&#x25C0;'; // ◄ left arrow, collapse
-        mapDiv.classList.add('map-with-sidebar');
+    let sidebarOpen = !sidebarEl.classList.contains('sidebar-closed');
+    function updateSidebarToggleArrow() {
+        sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
+        sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
     }
-}
-toggleBtn.addEventListener('click', function() {
-    sidebar.classList.toggle('sidebar-closed');
-    sidebar.classList.toggle('sidebar-open');
-    updateArrow();
+    sidebarToggleBtn.addEventListener('click', function() {
+        sidebarOpen = !sidebarOpen;
+        if (sidebarOpen) {
+            sidebarEl.classList.remove('sidebar-closed');
+        } else {
+            sidebarEl.classList.add('sidebar-closed');
+        }
+        updateSidebarToggleArrow();
+    });
+    updateSidebarToggleArrow();
 });
-updateArrow();
