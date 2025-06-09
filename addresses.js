@@ -1,5 +1,4 @@
-// Summer Training 2025 address data
-const addresses = [
+window.addresses = [
   {
     name: "FURY (150 - 200)",
     poc: "Jay Merrifield",
@@ -13,7 +12,7 @@ const addresses = [
     poc: "Grant Misbach",
     phone: "(801) 643-9206",
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-    // This is the "left" marker
+    // Original coordinates
     coords: [34.0921, -117.5743],
     date: "June 30 - July 1"
   },
@@ -22,7 +21,7 @@ const addresses = [
     poc: "Cole Sexton & Christian Harrison",
     phone: "320-339-1204",
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-    // This is the "right" marker (nudged slightly east)
+    // Slightly offset longitude for a separate marker
     coords: [34.0921, -117.5737],
     date: "June 23 - 24"
   },
@@ -47,15 +46,4 @@ const addresses = [
     poc: "Hayden Young",
     phone: "385-219-0979",
     address: "3536 W Dorothea Ave. Visalia, CA. 93277",
-    coords: [36.2995, -119.3258],
-    date: "July 14 - 15"
-  },
-  {
-    name: "MOTION (50+)",
-    poc: "Junior Bandeira",
-    phone: "773-501-5285",
-    address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
-    coords: [37.7038, -121.7680],
-    date: "July 17 - 18"
-  }
-];
+    coords: [36.2995, -
