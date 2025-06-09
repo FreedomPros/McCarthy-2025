@@ -1,4 +1,4 @@
-// Summer Training 2025 addresses — duplicate address markers are offset slightly
+// Summer Training 2025 addresses
 window.addresses = [
   {
     name: "FURY (150 - 200)",
@@ -13,7 +13,7 @@ window.addresses = [
     poc: "Grant Misbach",
     phone: "(801) 643-9206",
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-    coords: [34.0921, -117.5743], // left marker (original)
+    coords: [34.0921, -117.5743],
     date: "June 30 - July 1"
   },
   {
@@ -21,7 +21,7 @@ window.addresses = [
     poc: "Cole Sexton & Christian Harrison",
     phone: "320-339-1204",
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-    coords: [34.0921, -117.5737], // right marker (offset)
+    coords: [34.0921, -117.5737],
     date: "June 23 - 24"
   },
   {
