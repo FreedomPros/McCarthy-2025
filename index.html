@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Summer Training 2025 Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         html, body { height: 100%; margin: 0; padding: 0; }
@@ -54,7 +55,7 @@
         .month-group { margin-bottom: 12px; border-radius: 8px; padding-bottom: 5px;}
         .month-label { font-weight: bold; padding: 8px 20px 4px 20px;}
         .event-item { margin: 7px 10px; border-radius: 7px; background: #f6f6fa; box-shadow: 0 1px 2px #eee; }
-        .event-header { cursor: pointer; padding: 11px 16px 7px 16px; }
+        .event-header { cursor: pointer; padding: 11px 16px 7px 16px; user-select: none;}
         .event-name { font-weight: bold; color: #173a5e; display: block;}
         .event-date { font-size: 0.94em; color: #3a5570; display: block; margin-top: 2px;}
         .event-details { display: none; padding: 0 16px 13px 16px; font-size: 0.97em;}
@@ -140,6 +141,7 @@
         }
     ];
 
+    // Helper to parse and sort events chronologically
     function parseDateRange(dateStr) {
         const months = { "June": 5, "July": 6, "August": 7 };
         const parts = dateStr.split("-");
@@ -224,6 +226,8 @@
         sidebarEventDivs.forEach((div, i) => {
             if (i === idx) {
                 div.classList.add('expanded');
+                // Scroll into view for user
+                div.scrollIntoView({ behavior: "smooth", block: "center" });
             } else {
                 div.classList.remove('expanded');
             }
