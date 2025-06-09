@@ -1,1 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Summer Training 2025 Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="sidebar" class="sidebar-open">
+    <h2>Summer Training 2025</h2>
+    <div id="location-list"></div>
+  </div>
+  <button id="sidebar-toggle-btn" title="Hide/show key">&laquo;</button>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="addresses.js"></script>
+  <script>
+    // ---- Marker Icons ----
+    const blueIcon = new L.Icon({
+      iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png',
+      iconRetinaUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon-2x.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
+      shadowSize: [41, 41]
+    });
+    const redIcon = new L.Icon({
+      iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
+      iconRetinaUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
+      iconSize: [36, 55],
+      iconAnchor: [18, 55],
+      popupAnchor: [1, -44],
+      shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
+      shadowSize: [55, 55]
+    });
 
+    let markerRefs = [];
+    let sidebarEventDivs = [];
+    let sidebarOrder = []; // To map index to marker/event
+
+    const addresses = window.addresses;
+
+    // Parse the start date from the date string for sorting
+    function getStartDate(event) {
+      // Handles "June 23 - 24", "June 30 - July 1", "July 7", etc.
+      const months = { "June": 6, "July": 7, "August": 8 };
+      const dateStr = event.date || "";
+      const parts = dateStr.split("-");
+      let match = parts[0].trim().match(/([A-Za-z]+)\s+(\d+)/);
+      if (!match) return new Date(2099,0,1); // fallback far future
+      let month = months[match[1]];
+      let day = parseInt(match[2]);
+      return new Date(2025, month - 1, day);
+    }
+
+    // Group addresses by region, with the addresses in each region sorted by date
+    function groupByRegion(addresses) {
+      const grouped = {};
+      addresses.forEach(addr => {
+        if (!grouped[addr.region]) grouped[addr.region] = [];
+        grouped[addr.region].push(addr);
+      });
+      // Sort each region's events by date
+      Object.keys(grouped).forEach(region => {
+        grouped[region].sort((a, b) => getStartDate(a) - getStartDate(b));
+      });
+      return grouped;
+    }
+
+    // State for which regions are open
+    let regionOpenState = {};
+
+    // By default, open all regions
+    function getInitialRegionOpenState(grouped) {
+      const state = {};
+      Object.keys(grouped).forEach(region => {
+        state[region] = false; // collapsed by default
+      });
+      // Optionally open the first region by default:
+      const firstRegion = Object.keys(grouped)[0];
+      if (firstRegion) state[firstRegion] = true;
+      return state;
+    }
+
+    function renderSidebar() {
+      const container = document.getElementById('location-list');
+      container.innerHTML = '';
+      sidebarEventDivs = [];
+      sidebarOrder = [];
+      const grouped = groupByRegion(addresses);
+
+      // Initialize region open state if not yet set
+      if (Object.keys(regionOpenState).length === 0) {
+        regionOpenState = getInitialRegionOpenState(grouped);
+      }
+
+      let globalIdx = 0;
+      Object.keys(grouped).forEach(region => {
+        // Region heading (collapsible)
+        const regionHeader = document.createElement('div');
+        regionHeader.className = 'region-header' + (regionOpenState[region] ? "" : " collapsed");
+        regionHeader.setAttribute('data-region', region);
+
+        const arrow = document.createElement('span');
+        arrow.className = 'arrow';
+        arrow.textContent = regionOpenState[region] ? "▼" : "▶";
+        regionHeader.appendChild(arrow);
+
+        const label = document.createElement('span');
+        label.textContent = region;
+        regionHeader.appendChild(label);
+
+        regionHeader.addEventListener('click', function() {
+          regionOpenState[region] = !regionOpenState[region];
+          renderSidebar();
+        });
+
+        container.appendChild(regionHeader);
+
+        // Collapsible region content
+        const regionContent = document.createElement('div');
+        regionContent.className = 'region-content' + (regionOpenState[region] ? ' expanded' : '');
+        regionContent.style.display = regionOpenState[region] ? 'block' : 'none';
+
+        grouped[region].forEach(event => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'event-item';
+          itemDiv.setAttribute('data-index', globalIdx);
+
+          const headerDiv = document.createElement('div');
+          headerDiv.className = 'event-header';
+          headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
+                                 <span class="event-date">${event.date}</span>`;
+
+          headerDiv.addEventListener('click', function(e) {
+            // Prevent region collapse when clicking event
+            e.stopPropagation();
+            expandAndHighlight(globalIdx);
+          });
+
+          const detailsDiv = document.createElement('div');
+          detailsDiv.className = 'event-details';
+          detailsDiv.innerHTML = `
+            <div><strong>POC:</strong> ${event.poc}</div>
+            <div><strong>Phone:</strong> ${event.phone}</div>
+            <div><strong>Address:</strong> ${event.address}</div>
+          `;
+
+          itemDiv.appendChild(headerDiv);
+          itemDiv.appendChild(detailsDiv);
+          regionContent.appendChild(itemDiv);
+          sidebarEventDivs.push(itemDiv);
+          sidebarOrder.push(event);
+          globalIdx++;
+        });
+
+        container.appendChild(regionContent);
+      });
+    }
+
+    function expandAndHighlight(idx) {
+      sidebarEventDivs.forEach((div, i) => {
+        if (i === idx) {
+          div.classList.add('expanded');
+          div.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          div.classList.remove('expanded');
+        }
+      });
+      markerRefs.forEach((marker, i) => {
+        if (i === idx) {
+          marker.setIcon(redIcon);
+          marker.setZIndexOffset(1000);
+          marker.openPopup();
+        } else {
+          marker.setIcon(blueIcon);
+          marker.setZIndexOffset(0);
+          marker.closePopup();
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderSidebar();
+
+      // Map setup
+      window.map = L.map('map').setView([36.7783, -119.4179], 6);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(window.map);
+
+      // For markers, flatten the addresses in sidebar order
+      const grouped = groupByRegion(addresses);
+      sidebarOrder = [];
+      Object.keys(grouped).forEach(region => {
+        grouped[region].forEach(event => sidebarOrder.push(event));
+      });
+
+      markerRefs = [];
+      sidebarOrder.forEach((loc, i) => {
+        const marker = L.marker(loc.coords, { icon: blueIcon })
+          .addTo(window.map)
+          .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
+        markerRefs.push(marker);
+
+        marker.on('click', function() {
+          // Make sure the region is open before expanding/highlighting
+          regionOpenState[loc.region] = true;
+          renderSidebar();
+          expandAndHighlight(i);
+        });
+      });
+
+      // Sidebar toggle
+      const sidebarEl = document.getElementById('sidebar');
+      const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+      let sidebarOpen = true;
+      function updateSidebarToggleArrow() {
+        sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
+        sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
+      }
+      sidebarToggleBtn.addEventListener('click', function() {
+        sidebarOpen = !sidebarOpen;
+        if (sidebarOpen) {
+          sidebarEl.classList.remove('sidebar-closed');
+        } else {
+          sidebarEl.classList.add('sidebar-closed');
+        }
+        updateSidebarToggleArrow();
+      });
+      updateSidebarToggleArrow();
+    });
+  </script>
+</body>
+</html>
