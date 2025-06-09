@@ -72,6 +72,6 @@ window.addresses = [
     phone: "(208) 360-3024",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
-    date: "" // Add date if you have it!
+    date: "July 14 - 15"
   }
 ];
