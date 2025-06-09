@@ -41,11 +41,28 @@
     let sidebarEventDivs = [];
     const addresses = window.addresses;
 
+    // Parse the start date from the date string for sorting
+    function getStartDate(event) {
+      // Handles "June 23 - 24", "June 30 - July 1", etc.
+      const months = { "June": 6, "July": 7, "August": 8 };
+      const dateStr = event.date;
+      const parts = dateStr.split("-");
+      // First part: e.g. "June 23" or "June 30"
+      let match = parts[0].trim().match(/([A-Za-z]+)\s+(\d+)/);
+      if (!match) return new Date(2099,0,1); // fallback far future
+      let month = months[match[1]];
+      let day = parseInt(match[2]);
+      return new Date(2025, month - 1, day);
+    }
+
+    // Sort addresses by the start date
+    const sortedAddresses = addresses.slice().sort((a, b) => getStartDate(a) - getStartDate(b));
+
     function renderSidebar() {
       const container = document.getElementById('location-list');
       container.innerHTML = '';
       sidebarEventDivs = [];
-      addresses.forEach((event, idx) => {
+      sortedAddresses.forEach((event, idx) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'event-item';
         itemDiv.setAttribute('data-index', idx);
@@ -106,7 +123,7 @@
       }).addTo(window.map);
 
       markerRefs = [];
-      addresses.forEach((loc, i) => {
+      sortedAddresses.forEach((loc, i) => {
         const marker = L.marker(loc.coords, { icon: blueIcon })
           .addTo(window.map)
           .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
