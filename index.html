@@ -39,6 +39,7 @@
 
     let markerRefs = [];
     let sidebarEventDivs = [];
+    let sidebarOrder = []; // To map index to marker/event
 
     const addresses = window.addresses;
 
@@ -69,35 +70,75 @@
       return grouped;
     }
 
+    // State for which regions are open
+    let regionOpenState = {};
+
+    // By default, open all regions
+    function getInitialRegionOpenState(grouped) {
+      const state = {};
+      Object.keys(grouped).forEach(region => {
+        state[region] = false; // collapsed by default
+      });
+      // Optionally open the first region by default:
+      const firstRegion = Object.keys(grouped)[0];
+      if (firstRegion) state[firstRegion] = true;
+      return state;
+    }
+
     function renderSidebar() {
       const container = document.getElementById('location-list');
       container.innerHTML = '';
       sidebarEventDivs = [];
-      let idx = 0;
+      sidebarOrder = [];
       const grouped = groupByRegion(addresses);
 
+      // Initialize region open state if not yet set
+      if (Object.keys(regionOpenState).length === 0) {
+        regionOpenState = getInitialRegionOpenState(grouped);
+      }
+
+      let globalIdx = 0;
       Object.keys(grouped).forEach(region => {
-        // Region heading
+        // Region heading (collapsible)
         const regionHeader = document.createElement('div');
-        regionHeader.style.fontWeight = "bold";
-        regionHeader.style.fontSize = "1.1em";
-        regionHeader.style.margin = "24px 0 10px 18px";
-        regionHeader.textContent = region;
+        regionHeader.className = 'region-header' + (regionOpenState[region] ? "" : " collapsed");
+        regionHeader.setAttribute('data-region', region);
+
+        const arrow = document.createElement('span');
+        arrow.className = 'arrow';
+        arrow.textContent = regionOpenState[region] ? "▼" : "▶";
+        regionHeader.appendChild(arrow);
+
+        const label = document.createElement('span');
+        label.textContent = region;
+        regionHeader.appendChild(label);
+
+        regionHeader.addEventListener('click', function() {
+          regionOpenState[region] = !regionOpenState[region];
+          renderSidebar();
+        });
+
         container.appendChild(regionHeader);
 
-        // List events for this region
+        // Collapsible region content
+        const regionContent = document.createElement('div');
+        regionContent.className = 'region-content' + (regionOpenState[region] ? ' expanded' : '');
+        regionContent.style.display = regionOpenState[region] ? 'block' : 'none';
+
         grouped[region].forEach(event => {
           const itemDiv = document.createElement('div');
           itemDiv.className = 'event-item';
-          itemDiv.setAttribute('data-index', idx);
+          itemDiv.setAttribute('data-index', globalIdx);
 
           const headerDiv = document.createElement('div');
           headerDiv.className = 'event-header';
           headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
                                  <span class="event-date">${event.date}</span>`;
 
-          headerDiv.addEventListener('click', function() {
-            expandAndHighlight(idx);
+          headerDiv.addEventListener('click', function(e) {
+            // Prevent region collapse when clicking event
+            e.stopPropagation();
+            expandAndHighlight(globalIdx);
           });
 
           const detailsDiv = document.createElement('div');
@@ -110,10 +151,13 @@
 
           itemDiv.appendChild(headerDiv);
           itemDiv.appendChild(detailsDiv);
-          container.appendChild(itemDiv);
+          regionContent.appendChild(itemDiv);
           sidebarEventDivs.push(itemDiv);
-          idx++;
+          sidebarOrder.push(event);
+          globalIdx++;
         });
+
+        container.appendChild(regionContent);
       });
     }
 
@@ -150,7 +194,7 @@
 
       // For markers, flatten the addresses in sidebar order
       const grouped = groupByRegion(addresses);
-      const sidebarOrder = [];
+      sidebarOrder = [];
       Object.keys(grouped).forEach(region => {
         grouped[region].forEach(event => sidebarOrder.push(event));
       });
@@ -163,6 +207,9 @@
         markerRefs.push(marker);
 
         marker.on('click', function() {
+          // Make sure the region is open before expanding/highlighting
+          regionOpenState[loc.region] = true;
+          renderSidebar();
           expandAndHighlight(i);
         });
       });
