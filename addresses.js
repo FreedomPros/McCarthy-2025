@@ -1,156 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Summer Training 2025 Map</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div id="sidebar" class="sidebar-open">
-    <h2>Summer Training 2025</h2>
-    <div id="location-list"></div>
-  </div>
-  <button id="sidebar-toggle-btn" title="Hide/show key">&laquo;</button>
-  <div id="map"></div>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="addresses.js"></script>
-  <script>
-    // ---- Marker Icons ----
-    const blueIcon = new L.Icon({
-      iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png',
-      iconRetinaUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon-2x.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
-      shadowSize: [41, 41]
-    });
-    const redIcon = new L.Icon({
-      iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
-      iconRetinaUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
-      iconSize: [36, 55],
-      iconAnchor: [18, 55],
-      popupAnchor: [1, -44],
-      shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
-      shadowSize: [55, 55]
-    });
-
-    let markerRefs = [];
-    let sidebarEventDivs = [];
-    const addresses = window.addresses;
-
-    // Parse the start date from the date string for sorting
-    function getStartDate(event) {
-      const months = { "June": 6, "July": 7, "August": 8 };
-      const dateStr = event.date || "";
-      const parts = dateStr.split("-");
-      let match = parts[0].trim().match(/([A-Za-z]+)\s+(\d+)/);
-      if (!match) return new Date(2099,0,1); // fallback far future
-      let month = months[match[1]];
-      let day = parseInt(match[2]);
-      return new Date(2025, month - 1, day);
-    }
-
-    // Sort addresses by the start date
-    const sortedAddresses = addresses.slice().sort((a, b) => getStartDate(a) - getStartDate(b));
-
-    function renderSidebar() {
-      const container = document.getElementById('location-list');
-      container.innerHTML = '';
-      sidebarEventDivs = [];
-      sortedAddresses.forEach((event, idx) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'event-item';
-        itemDiv.setAttribute('data-index', idx);
-
-        const headerDiv = document.createElement('div');
-        headerDiv.className = 'event-header';
-        headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
-                               <span class="event-date">${event.date}</span>`;
-
-        headerDiv.addEventListener('click', function() {
-          expandAndHighlight(idx);
-        });
-
-        const detailsDiv = document.createElement('div');
-        detailsDiv.className = 'event-details';
-        detailsDiv.innerHTML = `
-          <div><strong>POC:</strong> ${event.poc}</div>
-          <div><strong>Phone:</strong> ${event.phone}</div>
-          <div><strong>Address:</strong> ${event.address}</div>
-        `;
-
-        itemDiv.appendChild(headerDiv);
-        itemDiv.appendChild(detailsDiv);
-        container.appendChild(itemDiv);
-        sidebarEventDivs.push(itemDiv);
-      });
-    }
-
-    function expandAndHighlight(idx) {
-      sidebarEventDivs.forEach((div, i) => {
-        if (i === idx) {
-          div.classList.add('expanded');
-          div.scrollIntoView({ behavior: "smooth", block: "center" });
-        } else {
-          div.classList.remove('expanded');
-        }
-      });
-      markerRefs.forEach((marker, i) => {
-        if (i === idx) {
-          marker.setIcon(redIcon);
-          marker.setZIndexOffset(1000);
-          marker.openPopup();
-        } else {
-          marker.setIcon(blueIcon);
-          marker.setZIndexOffset(0);
-          marker.closePopup();
-        }
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      renderSidebar();
-
-      // Map setup
-      window.map = L.map('map').setView([36.7783, -119.4179], 6);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(window.map);
-
-      markerRefs = [];
-      sortedAddresses.forEach((loc, i) => {
-        const marker = L.marker(loc.coords, { icon: blueIcon })
-          .addTo(window.map)
-          .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
-        markerRefs.push(marker);
-
-        marker.on('click', function() {
-          expandAndHighlight(i);
-        });
-      });
-
-      // Sidebar toggle
-      const sidebarEl = document.getElementById('sidebar');
-      const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
-      let sidebarOpen = true;
-      function updateSidebarToggleArrow() {
-        sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
-        sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
-      }
-      sidebarToggleBtn.addEventListener('click', function() {
-        sidebarOpen = !sidebarOpen;
-        if (sidebarOpen) {
-          sidebarEl.classList.remove('sidebar-closed');
-        } else {
-          sidebarEl.classList.add('sidebar-closed');
-        }
-        updateSidebarToggleArrow();
-      });
-      updateSidebarToggleArrow();
-    });
-  </script>
-</body>
-</html>
+window.addresses = [
+  {
+    name: "FURY (150 - 200) CA",
+    poc: "Jay Merrifield",
+    phone: "801-336-6924",
+    address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
+    coords: [33.6644, -117.7576],
+    date: "June 26 - 27"
+  },
+  {
+    name: "MOMENTVS (70-80) CA",
+    poc: "Cole Sexton & Christian Harrison",
+    phone: "320-339-1204",
+    address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+    coords: [34.0921, -117.5737],
+    date: "June 23 - 24"
+  },
+  {
+    name: "DAUNTLESS & MOTION (60-70) CA",
+    poc: "Casey Mosier",
+    phone: "801-787-2621",
+    address: "15601 Garland Cir. Westminster CA 92683",
+    coords: [33.7436, -117.9677],
+    date: "June 30 - July 1"
+  },
+  {
+    name: "BAN, UNITED, & FORGE (65-75) CA",
+    poc: "Grant Misbach",
+    phone: "(801) 643-9206",
+    address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+    coords: [34.0921, -117.5743],
+    date: "July 3 - 4"
+  },
+  {
+    name: "THE SPARTANS & EMPIRE (15) CA",
+    poc: "Spencer deavila/ Zak Hattab",
+    phone: "484-401-0077",
+    address: "27141 Hideaway Ave. Santa Clarita, 91351",
+    coords: [34.4264, -118.4842],
+    date: "July 7"
+  },
+  {
+    name: "PRIME & APOLLO (30) CA",
+    poc: "Hayden Young",
+    phone: "385-219-0979",
+    address: "3536 W Dorothea Ave. Visalia, CA. 93277",
+    coords: [36.2995, -119.3258],
+    date: "July 9"
+  },
+  {
+    name: "MOTION (50+) CA",
+    poc: "Junior Bandeira",
+    phone: "773-501-5285",
+    address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
+    coords: [37.7038, -121.7680],
+    date: "July 11 - 12"
+  },
+  {
+    name: "PRIME, VITALITY, ENVISION (85-90) IL",
+    poc: "Chayse Kidd",
+    phone: "(208) 360-3024",
+    address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
+    coords: [41.8023, -88.0884],
+    date: "July 14 - 15"
+  }
+];
