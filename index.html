@@ -43,9 +43,11 @@
 
     // Parse the start date from the date string for sorting
     function getStartDate(event) {
+      // Handles "June 23 - 24", "June 30 - July 1", etc.
       const months = { "June": 6, "July": 7, "August": 8 };
-      const dateStr = event.date || "";
+      const dateStr = event.date;
       const parts = dateStr.split("-");
+      // First part: e.g. "June 23" or "June 30"
       let match = parts[0].trim().match(/([A-Za-z]+)\s+(\d+)/);
       if (!match) return new Date(2099,0,1); // fallback far future
       let month = months[match[1]];
