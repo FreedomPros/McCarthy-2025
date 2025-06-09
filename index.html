@@ -39,15 +39,15 @@
 
     let markerRefs = [];
     let sidebarEventDivs = [];
+
     const addresses = window.addresses;
 
     // Parse the start date from the date string for sorting
     function getStartDate(event) {
-      // Handles "June 23 - 24", "June 30 - July 1", etc.
+      // Handles "June 23 - 24", "June 30 - July 1", "July 7", etc.
       const months = { "June": 6, "July": 7, "August": 8 };
-      const dateStr = event.date;
+      const dateStr = event.date || "";
       const parts = dateStr.split("-");
-      // First part: e.g. "June 23" or "June 30"
       let match = parts[0].trim().match(/([A-Za-z]+)\s+(\d+)/);
       if (!match) return new Date(2099,0,1); // fallback far future
       let month = months[match[1]];
@@ -55,39 +55,65 @@
       return new Date(2025, month - 1, day);
     }
 
-    // Sort addresses by the start date
-    const sortedAddresses = addresses.slice().sort((a, b) => getStartDate(a) - getStartDate(b));
+    // Group addresses by region, with the addresses in each region sorted by date
+    function groupByRegion(addresses) {
+      const grouped = {};
+      addresses.forEach(addr => {
+        if (!grouped[addr.region]) grouped[addr.region] = [];
+        grouped[addr.region].push(addr);
+      });
+      // Sort each region's events by date
+      Object.keys(grouped).forEach(region => {
+        grouped[region].sort((a, b) => getStartDate(a) - getStartDate(b));
+      });
+      return grouped;
+    }
 
     function renderSidebar() {
       const container = document.getElementById('location-list');
       container.innerHTML = '';
       sidebarEventDivs = [];
-      sortedAddresses.forEach((event, idx) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'event-item';
-        itemDiv.setAttribute('data-index', idx);
+      let idx = 0;
+      const grouped = groupByRegion(addresses);
 
-        const headerDiv = document.createElement('div');
-        headerDiv.className = 'event-header';
-        headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
-                               <span class="event-date">${event.date}</span>`;
+      Object.keys(grouped).forEach(region => {
+        // Region heading
+        const regionHeader = document.createElement('div');
+        regionHeader.style.fontWeight = "bold";
+        regionHeader.style.fontSize = "1.1em";
+        regionHeader.style.margin = "24px 0 10px 18px";
+        regionHeader.textContent = region;
+        container.appendChild(regionHeader);
 
-        headerDiv.addEventListener('click', function() {
-          expandAndHighlight(idx);
+        // List events for this region
+        grouped[region].forEach(event => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'event-item';
+          itemDiv.setAttribute('data-index', idx);
+
+          const headerDiv = document.createElement('div');
+          headerDiv.className = 'event-header';
+          headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
+                                 <span class="event-date">${event.date}</span>`;
+
+          headerDiv.addEventListener('click', function() {
+            expandAndHighlight(idx);
+          });
+
+          const detailsDiv = document.createElement('div');
+          detailsDiv.className = 'event-details';
+          detailsDiv.innerHTML = `
+            <div><strong>POC:</strong> ${event.poc}</div>
+            <div><strong>Phone:</strong> ${event.phone}</div>
+            <div><strong>Address:</strong> ${event.address}</div>
+          `;
+
+          itemDiv.appendChild(headerDiv);
+          itemDiv.appendChild(detailsDiv);
+          container.appendChild(itemDiv);
+          sidebarEventDivs.push(itemDiv);
+          idx++;
         });
-
-        const detailsDiv = document.createElement('div');
-        detailsDiv.className = 'event-details';
-        detailsDiv.innerHTML = `
-          <div><strong>POC:</strong> ${event.poc}</div>
-          <div><strong>Phone:</strong> ${event.phone}</div>
-          <div><strong>Address:</strong> ${event.address}</div>
-        `;
-
-        itemDiv.appendChild(headerDiv);
-        itemDiv.appendChild(detailsDiv);
-        container.appendChild(itemDiv);
-        sidebarEventDivs.push(itemDiv);
       });
     }
 
@@ -122,8 +148,15 @@
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(window.map);
 
+      // For markers, flatten the addresses in sidebar order
+      const grouped = groupByRegion(addresses);
+      const sidebarOrder = [];
+      Object.keys(grouped).forEach(region => {
+        grouped[region].forEach(event => sidebarOrder.push(event));
+      });
+
       markerRefs = [];
-      sortedAddresses.forEach((loc, i) => {
+      sidebarOrder.forEach((loc, i) => {
         const marker = L.marker(loc.coords, { icon: blueIcon })
           .addTo(window.map)
           .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
