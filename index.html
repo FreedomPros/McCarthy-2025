@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Summer Training 2025 Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         html, body { height: 100%; margin: 0; padding: 0; }
@@ -78,9 +79,9 @@
     </div>
     <button id="sidebar-toggle-btn" title="Hide/show key">&laquo;</button>
     <div id="map"></div>
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-    // DATA
     const addresses = [
         {
             name: "FURY (150 - 200)",
@@ -290,42 +291,51 @@
         }
     }
 
-    // --- INITIALIZE EVERYTHING ---
-    renderSidebar();
+    // Map must be created after all DOM elements are present
+    // So defer until DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        renderSidebar();
 
-    // Markers (in order)
-    let orderedEvents = getOrderedEvents();
-    markerRefs = [];
-    for (let i = 0; i < orderedEvents.length; i++) {
-        const loc = orderedEvents[i];
-        const marker = L.marker(loc.coords, { icon: blueIcon })
-            .addTo(map)
-            .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
-        markerRefs.push(marker);
+        // Initialize map
+        window.map = L.map('map').setView([36.7783, -119.4179], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(window.map);
 
-        marker.on('click', function() {
-            expandAndHighlight(i);
-        });
-    }
+        // Markers (in order)
+        let orderedEvents = getOrderedEvents();
+        markerRefs = [];
+        for (let i = 0; i < orderedEvents.length; i++) {
+            const loc = orderedEvents[i];
+            const marker = L.marker(loc.coords, { icon: blueIcon })
+                .addTo(window.map)
+                .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
+            markerRefs.push(marker);
 
-    // Sidebar toggle
-    const sidebarEl = document.getElementById('sidebar');
-    const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
-    let sidebarOpen = true;
-    function updateSidebarToggleArrow() {
-        sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
-        sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
-    }
-    sidebarToggleBtn.addEventListener('click', function() {
-        sidebarOpen = !sidebarOpen;
-        if (sidebarOpen) {
-            sidebarEl.classList.remove('sidebar-closed');
-        } else {
-            sidebarEl.classList.add('sidebar-closed');
+            marker.on('click', function() {
+                expandAndHighlight(i);
+            });
         }
+
+        // Sidebar toggle
+        const sidebarEl = document.getElementById('sidebar');
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+        let sidebarOpen = true;
+        function updateSidebarToggleArrow() {
+            sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
+            sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
+        }
+        sidebarToggleBtn.addEventListener('click', function() {
+            sidebarOpen = !sidebarOpen;
+            if (sidebarOpen) {
+                sidebarEl.classList.remove('sidebar-closed');
+            } else {
+                sidebarEl.classList.add('sidebar-closed');
+            }
+            updateSidebarToggleArrow();
+        });
         updateSidebarToggleArrow();
     });
-    updateSidebarToggleArrow();
     </script>
 </body>
 </html>
