@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Summer Training 2025 Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         html, body { height: 100%; margin: 0; padding: 0; }
@@ -141,7 +140,6 @@
         }
     ];
 
-    // Helper to parse and sort events chronologically
     function parseDateRange(dateStr) {
         const months = { "June": 5, "July": 6, "August": 7 };
         const parts = dateStr.split("-");
@@ -166,6 +164,7 @@
         }
         return null;
     }
+
     function groupAndSortEvents(events) {
         const eventsWithKeys = events.map(event => {
             const range = parseDateRange(event.date);
@@ -203,11 +202,7 @@
         shadowSize: [55, 55]
     });
 
-    var map = L.map('map').setView([36.7783, -119.4179], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
+    // GLOBALS
     let markerRefs = [];
     let sidebarEventDivs = [];
 
@@ -226,7 +221,6 @@
         sidebarEventDivs.forEach((div, i) => {
             if (i === idx) {
                 div.classList.add('expanded');
-                // Scroll into view for user
                 div.scrollIntoView({ behavior: "smooth", block: "center" });
             } else {
                 div.classList.remove('expanded');
@@ -273,7 +267,8 @@
                 headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
                                        <span class="event-date">${event.date}</span>`;
 
-                headerDiv.addEventListener('click', function(e) {
+                // Attach the click event handler here!
+                headerDiv.addEventListener('click', function() {
                     expandAndHighlight(idx);
                 });
 
@@ -295,8 +290,10 @@
         }
     }
 
+    // --- INITIALIZE EVERYTHING ---
     renderSidebar();
 
+    // Markers (in order)
     let orderedEvents = getOrderedEvents();
     markerRefs = [];
     for (let i = 0; i < orderedEvents.length; i++) {
