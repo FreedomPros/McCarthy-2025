@@ -1,338 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Summer Training 2025 Map</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Your own styles.css, if you have one -->
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-        /* For demonstration, key CSS here. You can move these to styles.css if you like. */
-        html, body { height: 100%; margin: 0; padding: 0; }
-        #sidebar {
-            width: 320px;
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            background: #fff;
-            border-right: 1px solid #ccc;
-            overflow-y: auto;
-            transition: transform 0.3s cubic-bezier(.4,2.08,.55,.44);
-            z-index: 1001;
-            box-shadow: 2px 0 8px #0001;
-        }
-        #sidebar.sidebar-closed {
-            transform: translateX(-100%);
-        }
-        #sidebar-toggle-btn {
-            position: absolute;
-            top: 18px;
-            left: 325px;
-            width: 34px;
-            height: 44px;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-left: none;
-            border-radius: 0 6px 6px 0;
-            font-size: 22px;
-            cursor: pointer;
-            z-index: 1005;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 2px 0 8px #0001;
-            transition: left 0.3s;
-        }
-        #sidebar.sidebar-closed + #sidebar-toggle-btn {
-            left: 5px;
-            border-radius: 6px;
-            border-left: 1px solid #ccc;
-            border-right: none;
-        }
-        #sidebar h2 {
-            margin: 24px 0 12px 28px;
-            font-size: 1.2em;
-        }
-        #location-list { margin-bottom: 24px; }
-        .month-group { margin-bottom: 12px; border-radius: 8px; padding-bottom: 5px;}
-        .month-label { font-weight: bold; padding: 8px 20px 4px 20px;}
-        .event-item { margin: 7px 10px; border-radius: 7px; background: #f6f6fa; box-shadow: 0 1px 2px #eee; }
-        .event-header { cursor: pointer; padding: 11px 16px 7px 16px; user-select: none; }
-        .event-name { font-weight: bold; color: #173a5e; display: block;}
-        .event-date { font-size: 0.94em; color: #3a5570; display: block; margin-top: 2px;}
-        .event-details { display: none; padding: 0 16px 13px 16px; font-size: 0.97em;}
-        .event-item.expanded .event-details { display: block; }
-        .event-item.expanded { border: 2px solid #0074d9; background: #e4f4ff;}
-        #map { position: absolute; top: 0; left: 320px; right: 0; bottom: 0; transition: left 0.3s;}
-        #sidebar.sidebar-closed ~ #sidebar-toggle-btn { left: 5px; }
-        #sidebar.sidebar-closed ~ #map { left: 0; }
-        @media (max-width: 700px) {
-            #sidebar { width: 90vw; }
-            #map { left: 90vw; }
-            #sidebar.sidebar-closed ~ #map { left: 0; }
-            #sidebar-toggle-btn { left: 90vw; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Summer Training 2025 Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Optionally, your custom styles.css -->
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; }
+    #sidebar {
+      width: 320px;
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      background: #fff;
+      border-right: 1px solid #ccc;
+      overflow-y: auto;
+      transition: transform 0.3s cubic-bezier(.4,2.08,.55,.44);
+      z-index: 1001;
+      box-shadow: 2px 0 8px #0001;
+    }
+    #sidebar.sidebar-closed {
+      transform: translateX(-100%);
+    }
+    #sidebar-toggle-btn {
+      position: absolute;
+      top: 18px;
+      left: 325px;
+      width: 34px;
+      height: 44px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-radius: 0 6px 6px 0;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 1005;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 0 8px #0001;
+      transition: left 0.3s;
+    }
+    #sidebar.sidebar-closed + #sidebar-toggle-btn {
+      left: 5px;
+      border-radius: 6px;
+      border-left: 1px solid #ccc;
+      border-right: none;
+    }
+    #sidebar h2 {
+      margin: 24px 0 12px 28px;
+      font-size: 1.2em;
+    }
+    #location-list { margin-bottom: 24px; }
+    .month-group { margin-bottom: 12px; border-radius: 8px; padding-bottom: 5px;}
+    .month-label { font-weight: bold; padding: 8px 20px 4px 20px;}
+    .event-item { margin: 7px 10px; border-radius: 7px; background: #f6f6fa; box-shadow: 0 1px 2px #eee; }
+    .event-header { cursor: pointer; padding: 11px 16px 7px 16px; user-select: none;}
+    .event-name { font-weight: bold; color: #173a5e; display: block;}
+    .event-date { font-size: 0.94em; color: #3a5570; display: block; margin-top: 2px;}
+    .event-details { display: none; padding: 0 16px 13px 16px; font-size: 0.97em;}
+    .event-item.expanded .event-details { display: block; }
+    .event-item.expanded { border: 2px solid #0074d9; background: #e4f4ff;}
+    #map { position: absolute; top: 0; left: 320px; right: 0; bottom: 0; transition: left 0.3s;}
+    #sidebar.sidebar-closed ~ #sidebar-toggle-btn { left: 5px; }
+    #sidebar.sidebar-closed ~ #map { left: 0; }
+    @media (max-width: 700px) {
+      #sidebar { width: 90vw; }
+      #map { left: 90vw; }
+      #sidebar.sidebar-closed ~ #map { left: 0; }
+      #sidebar-toggle-btn { left: 90vw; }
+    }
+  </style>
 </head>
 <body>
-    <div id="sidebar" class="sidebar-open">
-        <h2>Summer Training 2025</h2>
-        <div id="location-list"></div>
-    </div>
-    <button id="sidebar-toggle-btn" title="Hide/show key">&laquo;</button>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-    // All JS in ONE place!
+  <div id="sidebar" class="sidebar-open">
+    <h2>Summer Training 2025</h2>
+    <div id="location-list"></div>
+  </div>
+  <button id="sidebar-toggle-btn" title="Hide/show key">&laquo;</button>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // DO NOT load any other JS files!
     const addresses = [
-        {
-            name: "FURY (150 - 200)",
-            poc: "Jay Merrifield",
-            phone: "801-336-6924",
-            address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
-            coords: [33.6644, -117.7576],
-            date: "June 26 - 27"
-        },
-        {
-            name: "BAN, UNITED, & FORGE (65-75)",
-            poc: "Grant Misbach",
-            phone: "(801) 643-9206",
-            address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-            coords: [34.0921, -117.5743],
-            date: "June 30 - July 1"
-        },
-        {
-            name: "DAUNTLESS (35)",
-            poc: "Casey Mosier",
-            phone: "801-787-2621",
-            address: "15601 Garland Cir. Westminster CA 92683",
-            coords: [33.7436, -117.9677],
-            date: "July 7 - 8"
-        },
-        {
-            name: "THE SPARTANS (15)",
-            poc: "Spencer deavila/ Zak Hattab",
-            phone: "484-401-0077",
-            address: "27141 Hideaway Ave. Santa Clarita, 91351",
-            coords: [34.4264, -118.4842],
-            date: "July 10 - 11"
-        },
-        {
-            name: "PRIME (30)",
-            poc: "Hayden Young",
-            phone: "385-219-0979",
-            address: "3536 W Dorothea Ave. Visalia, CA. 93277",
-            coords: [36.2995, -119.3258],
-            date: "July 14 - 15"
-        },
-        {
-            name: "MOTION (50+)",
-            poc: "Junior Bandeira",
-            phone: "773-501-5285",
-            address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
-            coords: [37.7038, -121.7680],
-            date: "July 17 - 18"
-        },
-        {
-            name: "MOMENTVS (70-80)",
-            poc: "Cole Sexton & Christian Harrison",
-            phone: "320-339-1204",
-            address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-            coords: [34.0921, -117.5743],
-            date: "June 23 - 24"
-        }
+      {
+        name: "FURY (150 - 200)",
+        poc: "Jay Merrifield",
+        phone: "801-336-6924",
+        address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
+        coords: [33.6644, -117.7576],
+        date: "June 26 - 27"
+      },
+      {
+        name: "BAN, UNITED, & FORGE (65-75)",
+        poc: "Grant Misbach",
+        phone: "(801) 643-9206",
+        address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+        coords: [34.0921, -117.5743],
+        date: "June 30 - July 1"
+      },
+      {
+        name: "DAUNTLESS (35)",
+        poc: "Casey Mosier",
+        phone: "801-787-2621",
+        address: "15601 Garland Cir. Westminster CA 92683",
+        coords: [33.7436, -117.9677],
+        date: "July 7 - 8"
+      },
+      {
+        name: "THE SPARTANS (15)",
+        poc: "Spencer deavila/ Zak Hattab",
+        phone: "484-401-0077",
+        address: "27141 Hideaway Ave. Santa Clarita, 91351",
+        coords: [34.4264, -118.4842],
+        date: "July 10 - 11"
+      },
+      {
+        name: "PRIME (30)",
+        poc: "Hayden Young",
+        phone: "385-219-0979",
+        address: "3536 W Dorothea Ave. Visalia, CA. 93277",
+        coords: [36.2995, -119.3258],
+        date: "July 14 - 15"
+      },
+      {
+        name: "MOTION (50+)",
+        poc: "Junior Bandeira",
+        phone: "773-501-5285",
+        address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
+        coords: [37.7038, -121.7680],
+        date: "July 17 - 18"
+      },
+      {
+        name: "MOMENTVS (70-80)",
+        poc: "Cole Sexton & Christian Harrison",
+        phone: "320-339-1204",
+        address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+        coords: [34.0921, -117.5743],
+        date: "June 23 - 24"
+      }
     ];
 
     function parseDateRange(dateStr) {
-        const months = { "June": 5, "July": 6, "August": 7 };
-        const parts = dateStr.split("-");
-        if (parts.length === 2) {
-            const [startStr, endStr] = parts;
-            const startMatch = startStr.trim().match(/([A-Za-z]+)\s+(\d+)/);
-            if (!startMatch) return null;
-            const startMonth = startMatch[1];
-            const startDay = parseInt(startMatch[2], 10);
-
-            const endMatch = endStr.trim().match(/([A-Za-z]+)?\s*(\d+)/);
-            let endMonth = startMonth;
-            let endDay;
-            if (endMatch) {
-                if (endMatch[1]) endMonth = endMatch[1];
-                endDay = parseInt(endMatch[2], 10);
-            }
-            return [
-                { month: startMonth, monthNum: months[startMonth], day: startDay },
-                { month: endMonth, monthNum: months[endMonth], day: endDay }
-            ];
+      const months = { "June": 5, "July": 6, "August": 7 };
+      const parts = dateStr.split("-");
+      if (parts.length === 2) {
+        const [startStr, endStr] = parts;
+        const startMatch = startStr.trim().match(/([A-Za-z]+)\s+(\d+)/);
+        if (!startMatch) return null;
+        const startMonth = startMatch[1];
+        const startDay = parseInt(startMatch[2], 10);
+        const endMatch = endStr.trim().match(/([A-Za-z]+)?\s*(\d+)/);
+        let endMonth = startMonth;
+        let endDay;
+        if (endMatch) {
+          if (endMatch[1]) endMonth = endMatch[1];
+          endDay = parseInt(endMatch[2], 10);
         }
-        return null;
+        return [
+          { month: startMonth, monthNum: months[startMonth], day: startDay },
+          { month: endMonth, monthNum: months[endMonth], day: endDay }
+        ];
+      }
+      return null;
     }
 
     function groupAndSortEvents(events) {
-        const eventsWithKeys = events.map(event => {
-            const range = parseDateRange(event.date);
-            let sortKey = 0;
-            if (range) sortKey = (range[0].monthNum || 0) * 100 + range[0].day;
-            return { ...event, sortKey, startMonth: range ? range[0].month : "Unknown" };
-        });
-        eventsWithKeys.sort((a, b) => a.sortKey - b.sortKey);
+      const eventsWithKeys = events.map(event => {
+        const range = parseDateRange(event.date);
+        let sortKey = 0;
+        if (range) sortKey = (range[0].monthNum || 0) * 100 + range[0].day;
+        return { ...event, sortKey, startMonth: range ? range[0].month : "Unknown" };
+      });
+      eventsWithKeys.sort((a, b) => a.sortKey - b.sortKey);
 
-        const grouped = {};
-        eventsWithKeys.forEach(event => {
-            if (!grouped[event.startMonth]) grouped[event.startMonth] = [];
-            grouped[event.startMonth].push(event);
-        });
-        return grouped;
+      const grouped = {};
+      eventsWithKeys.forEach(event => {
+        if (!grouped[event.startMonth]) grouped[event.startMonth] = [];
+        grouped[event.startMonth].push(event);
+      });
+      return grouped;
     }
 
     const blueIcon = new L.Icon({
-        iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png',
-        iconRetinaUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon-2x.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
-        shadowSize: [41, 41]
+      iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png',
+      iconRetinaUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon-2x.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
+      shadowSize: [41, 41]
     });
     const redIcon = new L.Icon({
-        iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
-        iconRetinaUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
-        iconSize: [36, 55],
-        iconAnchor: [18, 55],
-        popupAnchor: [1, -44],
-        shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
-        shadowSize: [55, 55]
+      iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
+      iconRetinaUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png',
+      iconSize: [36, 55],
+      iconAnchor: [18, 55],
+      popupAnchor: [1, -44],
+      shadowUrl: 'https://unpkg.com/leaflet/dist/images/marker-shadow.png',
+      shadowSize: [55, 55]
     });
 
     let markerRefs = [];
     let sidebarEventDivs = [];
 
     function getOrderedEvents() {
-        const grouped = groupAndSortEvents(addresses);
-        let ordered = [];
-        for (const month of Object.keys(grouped)) {
-            for (const event of grouped[month]) {
-                ordered.push(event);
-            }
+      const grouped = groupAndSortEvents(addresses);
+      let ordered = [];
+      for (const month of Object.keys(grouped)) {
+        for (const event of grouped[month]) {
+          ordered.push(event);
         }
-        return ordered;
+      }
+      return ordered;
     }
 
     function expandAndHighlight(idx) {
-        sidebarEventDivs.forEach((div, i) => {
-            if (i === idx) {
-                div.classList.add('expanded');
-                div.scrollIntoView({ behavior: "smooth", block: "center" });
-            } else {
-                div.classList.remove('expanded');
-            }
-        });
-        markerRefs.forEach((marker, i) => {
-            if (i === idx) {
-                marker.setIcon(redIcon);
-                marker.setZIndexOffset(1000);
-                marker.openPopup();
-            } else {
-                marker.setIcon(blueIcon);
-                marker.setZIndexOffset(0);
-                marker.closePopup();
-            }
-        });
+      sidebarEventDivs.forEach((div, i) => {
+        if (i === idx) {
+          div.classList.add('expanded');
+          div.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          div.classList.remove('expanded');
+        }
+      });
+      markerRefs.forEach((marker, i) => {
+        if (i === idx) {
+          marker.setIcon(redIcon);
+          marker.setZIndexOffset(1000);
+          marker.openPopup();
+        } else {
+          marker.setIcon(blueIcon);
+          marker.setZIndexOffset(0);
+          marker.closePopup();
+        }
+      });
     }
 
     function renderSidebar() {
-        const colors = { "June": "#f9f9ef", "July": "#eef7fa", "August": "#f7eef9", "Unknown": "#f5f5f5" };
-        const grouped = groupAndSortEvents(addresses);
-        const container = document.getElementById('location-list');
-        container.innerHTML = '';
-        sidebarEventDivs = [];
-        let idx = 0;
-        for (const month of Object.keys(grouped)) {
-            const events = grouped[month];
-            const monthDiv = document.createElement('div');
-            monthDiv.className = 'month-group';
-            monthDiv.style.backgroundColor = colors[month] || "#f8f8f8";
+      const colors = { "June": "#f9f9ef", "July": "#eef7fa", "August": "#f7eef9", "Unknown": "#f5f5f5" };
+      const grouped = groupAndSortEvents(addresses);
+      const container = document.getElementById('location-list');
+      container.innerHTML = '';
+      sidebarEventDivs = [];
+      let idx = 0;
+      for (const month of Object.keys(grouped)) {
+        const events = grouped[month];
+        const monthDiv = document.createElement('div');
+        monthDiv.className = 'month-group';
+        monthDiv.style.backgroundColor = colors[month] || "#f8f8f8";
 
-            const monthLabel = document.createElement('div');
-            monthLabel.className = 'month-label';
-            monthLabel.textContent = month;
-            monthDiv.appendChild(monthLabel);
+        const monthLabel = document.createElement('div');
+        monthLabel.className = 'month-label';
+        monthLabel.textContent = month;
+        monthDiv.appendChild(monthLabel);
 
-            events.forEach((event) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'event-item';
-                itemDiv.setAttribute('data-index', idx);
+        events.forEach((event) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'event-item';
+          itemDiv.setAttribute('data-index', idx);
 
-                const headerDiv = document.createElement('div');
-                headerDiv.className = 'event-header';
-                headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
-                                       <span class="event-date">${event.date}</span>`;
+          const headerDiv = document.createElement('div');
+          headerDiv.className = 'event-header';
+          headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
+                                 <span class="event-date">${event.date}</span>`;
 
-                headerDiv.addEventListener('click', function() {
-                    expandAndHighlight(idx);
-                });
+          // Attach the click event handler here!
+          headerDiv.addEventListener('click', function() {
+            expandAndHighlight(idx);
+          });
 
-                const detailsDiv = document.createElement('div');
-                detailsDiv.className = 'event-details';
-                detailsDiv.innerHTML = `
-                    <div><strong>POC:</strong> ${event.poc}</div>
-                    <div><strong>Phone:</strong> ${event.phone}</div>
-                    <div><strong>Address:</strong> ${event.address}</div>
-                `;
+          const detailsDiv = document.createElement('div');
+          detailsDiv.className = 'event-details';
+          detailsDiv.innerHTML = `
+            <div><strong>POC:</strong> ${event.poc}</div>
+            <div><strong>Phone:</strong> ${event.phone}</div>
+            <div><strong>Address:</strong> ${event.address}</div>
+          `;
 
-                itemDiv.appendChild(headerDiv);
-                itemDiv.appendChild(detailsDiv);
-                monthDiv.appendChild(itemDiv);
-                sidebarEventDivs.push(itemDiv);
-                idx++;
-            });
-            container.appendChild(monthDiv);
-        }
+          itemDiv.appendChild(headerDiv);
+          itemDiv.appendChild(detailsDiv);
+          monthDiv.appendChild(itemDiv);
+          sidebarEventDivs.push(itemDiv);
+          idx++;
+        });
+        container.appendChild(monthDiv);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        renderSidebar();
+      renderSidebar();
+      window.map = L.map('map').setView([36.7783, -119.4179], 6);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(window.map);
 
-        // Map
-        window.map = L.map('map').setView([36.7783, -119.4179], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(window.map);
+      // Markers
+      let orderedEvents = getOrderedEvents();
+      markerRefs = [];
+      for (let i = 0; i < orderedEvents.length; i++) {
+        const loc = orderedEvents[i];
+        const marker = L.marker(loc.coords, { icon: blueIcon })
+          .addTo(window.map)
+          .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
+        markerRefs.push(marker);
 
-        // Markers
-        let orderedEvents = getOrderedEvents();
-        markerRefs = [];
-        for (let i = 0; i < orderedEvents.length; i++) {
-            const loc = orderedEvents[i];
-            const marker = L.marker(loc.coords, { icon: blueIcon })
-                .addTo(window.map)
-                .bindPopup(`<strong>${loc.name}</strong><br>${loc.address}<br>${loc.date}`);
-            markerRefs.push(marker);
-
-            marker.on('click', function() {
-                expandAndHighlight(i);
-            });
-        }
-
-        // Sidebar toggle
-        const sidebarEl = document.getElementById('sidebar');
-        const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
-        let sidebarOpen = true;
-        function updateSidebarToggleArrow() {
-            sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
-            sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
-        }
-        sidebarToggleBtn.addEventListener('click', function() {
-            sidebarOpen = !sidebarOpen;
-            if (sidebarOpen) {
-                sidebarEl.classList.remove('sidebar-closed');
-            } else {
-                sidebarEl.classList.add('sidebar-closed');
-            }
-            updateSidebarToggleArrow();
+        marker.on('click', function() {
+          expandAndHighlight(i);
         });
+      }
+
+      // Sidebar toggle
+      const sidebarEl = document.getElementById('sidebar');
+      const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+      let sidebarOpen = true;
+      function updateSidebarToggleArrow() {
+        sidebarToggleBtn.innerHTML = sidebarOpen ? "&laquo;" : "&raquo;";
+        sidebarToggleBtn.title = sidebarOpen ? "Hide key" : "Show key";
+      }
+      sidebarToggleBtn.addEventListener('click', function() {
+        sidebarOpen = !sidebarOpen;
+        if (sidebarOpen) {
+          sidebarEl.classList.remove('sidebar-closed');
+        } else {
+          sidebarEl.classList.add('sidebar-closed');
+        }
         updateSidebarToggleArrow();
+      });
+      updateSidebarToggleArrow();
     });
-    </script>
+  </script>
 </body>
 </html>
