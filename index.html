@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title>Summer Training 2025 Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Your own styles.css, if you have one -->
+    <link rel="stylesheet" href="styles.css" />
     <style>
+        /* For demonstration, key CSS here. You can move these to styles.css if you like. */
         html, body { height: 100%; margin: 0; padding: 0; }
         #sidebar {
             width: 320px;
@@ -55,7 +57,7 @@
         .month-group { margin-bottom: 12px; border-radius: 8px; padding-bottom: 5px;}
         .month-label { font-weight: bold; padding: 8px 20px 4px 20px;}
         .event-item { margin: 7px 10px; border-radius: 7px; background: #f6f6fa; box-shadow: 0 1px 2px #eee; }
-        .event-header { cursor: pointer; padding: 11px 16px 7px 16px; user-select: none;}
+        .event-header { cursor: pointer; padding: 11px 16px 7px 16px; user-select: none; }
         .event-name { font-weight: bold; color: #173a5e; display: block;}
         .event-date { font-size: 0.94em; color: #3a5570; display: block; margin-top: 2px;}
         .event-details { display: none; padding: 0 16px 13px 16px; font-size: 0.97em;}
@@ -79,9 +81,9 @@
     </div>
     <button id="sidebar-toggle-btn" title="Hide/show key">&laquo;</button>
     <div id="map"></div>
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
+    // All JS in ONE place!
     const addresses = [
         {
             name: "FURY (150 - 200)",
@@ -183,7 +185,6 @@
         return grouped;
     }
 
-    // ICONS
     const blueIcon = new L.Icon({
         iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png',
         iconRetinaUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon-2x.png',
@@ -203,7 +204,6 @@
         shadowSize: [55, 55]
     });
 
-    // GLOBALS
     let markerRefs = [];
     let sidebarEventDivs = [];
 
@@ -268,7 +268,6 @@
                 headerDiv.innerHTML = `<span class="event-name">${event.name}</span>
                                        <span class="event-date">${event.date}</span>`;
 
-                // Attach the click event handler here!
                 headerDiv.addEventListener('click', function() {
                     expandAndHighlight(idx);
                 });
@@ -291,18 +290,16 @@
         }
     }
 
-    // Map must be created after all DOM elements are present
-    // So defer until DOMContentLoaded
     document.addEventListener('DOMContentLoaded', function() {
         renderSidebar();
 
-        // Initialize map
+        // Map
         window.map = L.map('map').setView([36.7783, -119.4179], 6);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; OpenStreetMap contributors'
         }).addTo(window.map);
 
-        // Markers (in order)
+        // Markers
         let orderedEvents = getOrderedEvents();
         markerRefs = [];
         for (let i = 0; i < orderedEvents.length; i++) {
