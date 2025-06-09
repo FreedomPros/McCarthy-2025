@@ -17,7 +17,7 @@ window.addresses = [
     date: "June 23 - 24"
   },
   {
-    name: "DAUNTLESS (35)",
+    name: "DAUNTLESS & MOTION (60-70)",
     poc: "Casey Mosier",
     phone: "801-787-2621",
     address: "15601 Garland Cir. Westminster CA 92683",
@@ -33,7 +33,7 @@ window.addresses = [
     date: "July 3 - 4"
   },
   {
-    name: "THE SPARTANS (15)",
+    name: "THE SPARTANS & EMPIRE (15)",
     poc: "Spencer deavila/ Zak Hattab",
     phone: "484-401-0077",
     address: "27141 Hideaway Ave. Santa Clarita, 91351",
@@ -41,7 +41,7 @@ window.addresses = [
     date: "July 7"
   },
   {
-    name: "PRIME (30)",
+    name: "PRIME & APOLLO (30)",
     poc: "Hayden Young",
     phone: "385-219-0979",
     address: "3536 W Dorothea Ave. Visalia, CA. 93277",
@@ -54,6 +54,6 @@ window.addresses = [
     phone: "773-501-5285",
     address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
     coords: [37.7038, -121.7680],
-    date: "July 14 - 15"
+    date: "July 11 - 12"
   }
 ];
