@@ -9,14 +9,6 @@ window.addresses = [
     date: "June 26 - 27"
   },
   {
-    name: "BAN, UNITED, & FORGE (65-75)",
-    poc: "Grant Misbach",
-    phone: "(801) 643-9206",
-    address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
-    coords: [34.0921, -117.5743],
-    date: "June 30 - July 1"
-  },
-  {
     name: "MOMENTVS (70-80)",
     poc: "Cole Sexton & Christian Harrison",
     phone: "320-339-1204",
@@ -30,7 +22,15 @@ window.addresses = [
     phone: "801-787-2621",
     address: "15601 Garland Cir. Westminster CA 92683",
     coords: [33.7436, -117.9677],
-    date: "July 7 - 8"
+    date: "June 30 - July 1"
+  },
+  {
+    name: "BAN, UNITED, & FORGE (65-75)",
+    poc: "Grant Misbach",
+    phone: "(801) 643-9206",
+    address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
+    coords: [34.0921, -117.5743],
+    date: "July 3 - 4"
   },
   {
     name: "THE SPARTANS (15)",
@@ -38,7 +38,7 @@ window.addresses = [
     phone: "484-401-0077",
     address: "27141 Hideaway Ave. Santa Clarita, 91351",
     coords: [34.4264, -118.4842],
-    date: "July 10 - 11"
+    date: "July 7"
   },
   {
     name: "PRIME (30)",
@@ -46,7 +46,7 @@ window.addresses = [
     phone: "385-219-0979",
     address: "3536 W Dorothea Ave. Visalia, CA. 93277",
     coords: [36.2995, -119.3258],
-    date: "July 14 - 15"
+    date: "July 9"
   },
   {
     name: "MOTION (50+)",
@@ -54,6 +54,6 @@ window.addresses = [
     phone: "773-501-5285",
     address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
     coords: [37.7038, -121.7680],
-    date: "July 17 - 18"
+    date: "July 14 - 15"
   }
 ];
