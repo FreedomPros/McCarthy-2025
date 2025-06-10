@@ -4,7 +4,12 @@ window.addresses = [
     address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
     coords: [33.6644, -117.7576],
     contacts: [
-      "Jay Merrifield (801-336-6924)"
+      {
+        team: "FURY",
+        people: [
+          { name: "Jay Merrifield", phone: "801-336-6924" }
+        ]
+      }
     ],
     date: "June 26 - 27"
   },
@@ -13,8 +18,13 @@ window.addresses = [
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
     coords: [34.0921, -117.5737],
     contacts: [
-      "Cole Sexton (320-339-1204)",
-      "Christian Harrison (678) 702-7185"
+      {
+        team: "MOMENTVS",
+        people: [
+          { name: "Cole Sexton", phone: "320-339-1204" },
+          { name: "Christian Harrison", phone: "(678) 702-7185" }
+        ]
+      }
     ],
     date: "June 23 - 24"
   },
@@ -23,9 +33,19 @@ window.addresses = [
     address: "15601 Garland Cir. Westminster CA 92683",
     coords: [33.7436, -117.9677],
     contacts: [
-      "DAUNTLESS: Casey Mosier (801-787-2621)",
-      "MOTION: Jacob Garza (623) 308-9737",
-      "MOTION: Tilo Chen (510) 402-9699"
+      {
+        team: "DAUNTLESS",
+        people: [
+          { name: "Casey Mosier", phone: "801-787-2621" }
+        ]
+      },
+      {
+        team: "MOTION",
+        people: [
+          { name: "Jacob Garza", phone: "(623) 308-9737" },
+          { name: "Tilo Chen", phone: "(510) 402-9699" }
+        ]
+      }
     ],
     date: "June 30 - July 1"
   },
@@ -34,10 +54,25 @@ window.addresses = [
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
     coords: [34.0921, -117.5743],
     contacts: [
-      "BAN: Grant Misbach (801) 643-9206",
-      "UNITED: Casey Kendall (206) 554-1489",
-      "UNITED: Cameron Kendall (206) 661-4244",
-      "FORGE: Logan Berger (208) 954-1233"
+      {
+        team: "BAN",
+        people: [
+          { name: "Grant Misbach", phone: "(801) 643-9206" }
+        ]
+      },
+      {
+        team: "UNITED",
+        people: [
+          { name: "Casey Kendall", phone: "(206) 554-1489" },
+          { name: "Cameron Kendall", phone: "(206) 661-4244" }
+        ]
+      },
+      {
+        team: "FORGE",
+        people: [
+          { name: "Logan Berger", phone: "(208) 954-1233" }
+        ]
+      }
     ],
     date: "July 3 - 4"
   },
@@ -46,8 +81,18 @@ window.addresses = [
     address: "27141 Hideaway Ave. Santa Clarita, 91351",
     coords: [34.4264, -118.4842],
     contacts: [
-      "THE SPARTANS: Spencer deavila/ Zak Hattab (484) 401-0077",
-      "EMPIRE: Sebastian Rodriguez (813) 679-0944"
+      {
+        team: "THE SPARTANS",
+        people: [
+          { name: "Spencer deavila/ Zak Hattab", phone: "(484) 401-0077" }
+        ]
+      },
+      {
+        team: "EMPIRE",
+        people: [
+          { name: "Sebastian Rodriguez", phone: "(813) 679-0944" }
+        ]
+      }
     ],
     date: "July 7"
   },
@@ -56,8 +101,18 @@ window.addresses = [
     address: "FreedomForever: 3010 San Antonio Dr. Fowler, CA 93625",
     coords: [36.6177, -119.6782],
     contacts: [
-      "PRIME: Hayden Young (385-219-0979)",
-      "APOLLO: Nate Girsberger (385) 210-7846"
+      {
+        team: "PRIME",
+        people: [
+          { name: "Hayden Young", phone: "385-219-0979" }
+        ]
+      },
+      {
+        team: "APOLLO",
+        people: [
+          { name: "Nate Girsberger", phone: "(385) 210-7846" }
+        ]
+      }
     ],
     date: "July 9"
   },
@@ -66,7 +121,12 @@ window.addresses = [
     address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
     coords: [37.7038, -121.7680],
     contacts: [
-      "Junior Bandeira (773-501-5285)"
+      {
+        team: "MOTION",
+        people: [
+          { name: "Junior Bandeira", phone: "773-501-5285" }
+        ]
+      }
     ],
     date: "July 11 - 12"
   },
@@ -75,8 +135,18 @@ window.addresses = [
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
     contacts: [
-      "VITALITY: Chayse Kidd (208) 360-3024",
-      "ENVISION: Rocky Niger (727) 748-6089"
+      {
+        team: "VITALITY",
+        people: [
+          { name: "Chayse Kidd", phone: "(208) 360-3024" }
+        ]
+      },
+      {
+        team: "ENVISION",
+        people: [
+          { name: "Rocky Niger", phone: "(727) 748-6089" }
+        ]
+      }
     ],
     date: "July 15 - 16"
   }
