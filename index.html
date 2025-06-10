@@ -74,12 +74,26 @@
           expandAndHighlight(idx);
         });
 
+        // Render contacts with team label only once, and phone breaks
+        let contactsHtml = "";
+        if (event.contacts && event.contacts.length) {
+          contactsHtml = event.contacts.map(group => {
+            return group.people.map((person, idx2) => {
+              const teamLabel = idx2 === 0 ? `${group.team}: ` : "";
+              return `<div class="contact-entry">
+                ${teamLabel}${person.name}
+                <br><span class="contact-phone">${person.phone}</span>
+              </div>`;
+            }).join('');
+          }).join('');
+        }
+
         const detailsDiv = document.createElement('div');
         detailsDiv.className = 'event-details';
         detailsDiv.innerHTML = `
           <div><strong>Address: ${event.address}</strong></div>
           <div>
-            ${event.contacts && event.contacts.length ? event.contacts.map(c => `<div>${c}</div>`).join('') : ""}
+            ${contactsHtml}
           </div>
         `;
 
