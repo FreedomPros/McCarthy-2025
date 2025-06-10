@@ -94,10 +94,21 @@ html, body {
   color: #1d3250;
   font-weight: bold;
 }
-.event-details > div > div {
+.contact-entry {
+  margin-bottom: 4px;
   font-weight: 500;
-  margin-bottom: 3px;
   color: #28436a;
+  word-break: break-word;
+  line-height: 1.2em;
+  white-space: normal;
+}
+.contact-phone {
+  display: block;
+  margin-left: 0.5em;
+  color: #23446e;
+  font-weight: 400;
+  font-size: 0.98em;
+  word-break: break-all;
 }
 #map {
   position: absolute;
