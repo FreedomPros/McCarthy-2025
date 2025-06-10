@@ -131,10 +131,16 @@ window.addresses = [
     date: "July 11 - 12"
   },
   {
-    name: "PRIME, VITALITY, ENVISION (85-90) IL",
+    name: "EMPIRE, VITALITY, ENVISION (85-90) IL",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
     contacts: [
+      {
+        team: "EMPIRE",
+        people: [
+          { name: "Rocky Niger", phone: "(727) 748-6089" }
+        ]
+      },
       {
         team: "VITALITY",
         people: [
@@ -144,7 +150,7 @@ window.addresses = [
       {
         team: "ENVISION",
         people: [
-          { name: "Rocky Niger", phone: "(727) 748-6089" }
+          { name: "Drew Sanders", phone: "(918) 706-5054" }
         ]
       }
     ],
