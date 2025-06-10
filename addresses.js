@@ -131,7 +131,7 @@ window.addresses = [
     date: "July 11 - 12"
   },
   {
-    name: "EMPIRE, VITALITY, ENVISION & EXTREME (85-90) IL",
+    name: "EMPIRE, VITALITY, ENVISION & EXTREME (120) IL",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
     contacts: [
