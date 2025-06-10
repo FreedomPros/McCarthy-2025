@@ -77,7 +77,7 @@
         const detailsDiv = document.createElement('div');
         detailsDiv.className = 'event-details';
         detailsDiv.innerHTML = `
-          <div><strong>Address:</strong> ${event.address}</div>
+          <div><strong>Address: ${event.address}</strong></div>
           <div>
             ${event.contacts && event.contacts.length ? event.contacts.map(c => `<div>${c}</div>`).join('') : ""}
           </div>
