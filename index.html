@@ -77,9 +77,10 @@
         const detailsDiv = document.createElement('div');
         detailsDiv.className = 'event-details';
         detailsDiv.innerHTML = `
-          <div><strong>POC:</strong> ${event.poc}</div>
-          <div><strong>Phone:</strong> ${event.phone}</div>
           <div><strong>Address:</strong> ${event.address}</div>
+          <div>
+            ${event.contacts && event.contacts.length ? event.contacts.map(c => `<div>${c}</div>`).join('') : ""}
+          </div>
         `;
 
         itemDiv.appendChild(headerDiv);
