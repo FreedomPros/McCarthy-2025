@@ -84,7 +84,8 @@ window.addresses = [
       {
         team: "THE SPARTANS",
         people: [
-          { name: "Spencer deavila/ Zak Hattab", phone: "(484) 401-0077" }
+          { name: "Spencer Deavila", phone: "(661) 416-7979" },
+          { name: "Zak Hattab", phone: "(925) 435-7328" }
         ]
       },
       {
