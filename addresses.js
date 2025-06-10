@@ -43,7 +43,7 @@ window.addresses = [
     name: "PRIME & APOLLO (30) CA",
     poc: "Hayden Young",
     phone: "385-219-0979",
-    address: "3010 San Antonio Dr. Fowler, CA 93625",
+    address: "FreedomForever: 3010 San Antonio Dr. Fowler, CA 93625",
     coords: [36.6177, -119.6782],
     date: "July 9"
   },
