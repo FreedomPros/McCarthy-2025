@@ -95,7 +95,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 7"
+    date: "July 7 - 8"
   },
   {
     name: "PRIME & APOLLO (30) CA",
@@ -115,7 +115,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 9"
+    date: "July 10 - 11"
   },
   {
     name: "MOTION (50+) CA",
@@ -129,7 +129,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 11 - 12"
+    date: "July 14 - 15"
   },
   {
     name: "EMPIRE, VITALITY, ENVISION & EXTREME (120) IL",
@@ -162,7 +162,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 15 - 16"
+    date: "July 17 - 18"
   },
   {
     name: "SOVEREIGN & SLINGERS (40) IL",
@@ -184,6 +184,6 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 18 - 19"
+    date: "July 21 - 22"
   }
 ];
