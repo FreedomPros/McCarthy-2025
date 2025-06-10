@@ -70,6 +70,6 @@ window.addresses = [
       "VITALITY: Chayse Kidd (208) 360-3024",
       "ENVISION: Rocky Niger (727) 748-6089"
     ],
-    date: "July 14 - 15"
+    date: "July 15 - 16"
   }
 ];
