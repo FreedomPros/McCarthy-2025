@@ -77,7 +77,7 @@ window.addresses = [
     date: "July 3 - 4"
   },
   {
-    name: "THE SPARTANS & EMPIRE (15) CA",
+    name: "THE SPARTANS, EMPIRE & Kyros LA (50+) CA",
     address: "27141 Hideaway Ave. Santa Clarita, 91351",
     coords: [34.4264, -118.4842],
     contacts: [
