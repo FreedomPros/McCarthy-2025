@@ -30,7 +30,7 @@ window.addresses = [
   },
   {
     name: "DAUNTLESS & MOTION (60-70) CA",
-    address: "TBD",
+    address: "FURY OFFICE: 15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
     coords: [33.7436, -117.9677],
     contacts: [
       {
