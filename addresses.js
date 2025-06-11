@@ -132,7 +132,7 @@ window.addresses = [
     date: "July 14 - 15"
   },
   {
-    name: "EMPIRE, VITALITY, ENVISION & EXTREME (120) IL",
+    name: "EMPIRE, VITALITY, ENVISION, EXTREME & SLINGERS (140) IL",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
     contacts: [
@@ -160,12 +160,19 @@ window.addresses = [
           { name: "Ben Pappas", phone: "(717) 925-6924" },
           { name: "Tyler Whimpey", phone: "(801) 696-8581" }
         ]
+      },
+      {
+        team: "SLINGERS",
+        people: [
+          { name: "Crew Smithson", phone: "(385) 401-9266" },
+          { name: "Jared Monhey", phone: "(801) 631-1493" }
+        ]
       }
     ],
     date: "July 17 - 18"
   },
   {
-    name: "SOVEREIGN & SLINGERS (40) IL",
+    name: "SOVEREIGN (20) IL",
     address: "TBD: 10956 N Dickson Mounds Rd, Lewistown, IL 61542",
     coords: [40.394968, -90.170681],
     contacts: [
@@ -174,13 +181,6 @@ window.addresses = [
         people: [
           { name: "Mason Mahaffie", phone: "(541) 218-9473" },
           { name: "Jaden Banaszynski", phone: "(435) 256-2145" }
-        ]
-      },
-      {
-        team: "SLINGERS",
-        people: [
-          { name: "Crew Smithson", phone: "(385) 401-9266" },
-          { name: "Jared Monhey", phone: "(801) 631-1493" }
         ]
       }
     ],
