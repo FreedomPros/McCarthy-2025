@@ -169,21 +169,160 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 17 - 18"
+    date: "July 17, 18, 19"
   },
   {
-    name: "SOVEREIGN (20) IL",
-    address: "TBD: 10956 N Dickson Mounds Rd, Lewistown, IL 61542",
-    coords: [40.394968, -90.170681],
+    name: "SOL (10) MI",
+    address: "5786 W Saginaw Hwy, Lansing, MI 48917",
+    coords: [42.7254, -84.6318],
     contacts: [
       {
-        team: "SOVEREIGN",
+        team: "SOL",
         people: [
-          { name: "Mason Mahaffie", phone: "(541) 218-9473" },
-          { name: "Jaden Banaszynski", phone: "(435) 256-2145" }
+          { name: "Korey Lopez", phone: "(517) 914-4057" }
         ]
       }
     ],
-    date: "July 21 - 22"
+    date: "July 20"
+  },
+  {
+    name: "CTRL & BOUKNIGHT (100) MI",
+    address: "26211 Central Park Blvd. Southfield, Mi 48076",
+    coords: [42.4774, -83.2452],
+    contacts: [
+      {
+        team: "CTRL",
+        people: [
+          { name: "Alex Mueller", phone: "(402) 591-1482" },
+          { name: "Matt Merkel", phone: "(402) 739-3540" }
+        ]
+      },
+      {
+        team: "BOUKNIGHT",
+        people: [
+          { name: "Matt Lent", phone: "(954) 243-1732" }
+        ]
+      }
+    ],
+    date: "July 24, 25, 26"
+  },
+  {
+    name: "SOLAR MONEY GANG, OMNI, SPARTANS DFBUB, SUPREME (70) TX",
+    address: "3488 E Long Ave Fort Worth, TX 76137",
+    coords: [32.8134, -97.3021],
+    contacts: [
+      {
+        team: "SOLAR MONEY GANG",
+        people: [
+          { name: "Clayton Granch", phone: "(714) 612-2222" },
+          { name: "Josh Simmons", phone: "(682) 978-1939" }
+        ]
+      },
+      {
+        team: "OMNI",
+        people: [
+          { name: "Sam Parks", phone: "(714) 612-2222" }
+        ]
+      },
+      {
+        team: "SPARTANS DFBUB",
+        people: [
+          { name: "Pedro Kinlaw", phone: "(956) 340-6863" }
+        ]
+      },
+      {
+        team: "SUPREME",
+        people: [
+          { name: "Brandon Hoy", phone: "(541) 441-0779" }
+        ]
+      }
+    ],
+    date: "July 28 - 29"
+  },
+  {
+    name: "ELITE CHAKRA, IMPACT GROUP, THE MASTERS, SPACE CITY, THE STANDARD, ELEVATE (140) TX",
+    address: "1920 Primewest Pkwy. #400. Katy, TX 77449",
+    coords: [29.7841, -95.7317],
+    contacts: [
+      {
+        team: "ELITE CHAKRA",
+        people: [
+          { name: "Clayton Granch", phone: "(714) 612-2222" }
+        ]
+      },
+      {
+        team: "IMPACT GROUP",
+        people: [
+          { name: "Andy Wang" }
+        ]
+      },
+      {
+        team: "THE MASTERS",
+        people: [
+          { name: "Layton Hix", phone: "(346) 503-6060" }
+        ]
+      },
+      {
+        team: "SPACE CITY",
+        people: [
+          { name: "Saint Termeteet", phone: "(713) 887-2739" }
+        ]
+      },
+      {
+        team: "THE STANDARD",
+        people: [
+          { name: "Hameed Hewaldi", phone: "(214) 934-1435" }
+        ]
+      },
+      {
+        team: "ELEVATE",
+        people: [
+          { name: "Matt Lent", phone: "(954) 243-1732" }
+        ]
+      }
+    ],
+    date: "July 31 - Aug 1"
+  },
+  {
+    name: "ALL BAD (30-40) TX",
+    address: "1900 E Howard Ln. Fluegerville, TX. 78660",
+    coords: [30.4196, -97.6305],
+    contacts: [
+      {
+        team: "ALL BAD",
+        people: [
+          { name: "Tyler Brown", phone: "(702) 815-5886" }
+        ]
+      }
+    ],
+    date: "Aug 4 - 5"
+  },
+  {
+    name: "SAN ANTONIO (20-30) TX",
+    address: "15002 Tradesman Dr, San Antonio, TX 78249",
+    coords: [29.5777, -98.5896],
+    contacts: [
+      {
+        team: "SAN ANTONIO",
+        people: [
+          { name: "Tadd Jorgensen", phone: "(208) 681-0786" }
+        ]
+      }
+    ],
+    date: "Aug 7 - 8"
+  },
+  {
+    name: "LUMINOSITY (25) NM",
+    address: "TBD",
+    coords: [35.0844, -106.6504], // Albuquerque, NM
+    contacts: [
+      {
+        team: "LUMINOSITY",
+        people: [
+          { name: "Isidro Vazquez", phone: "(505) 385-7894" }
+        ]
+      }
+    ],
+    date: "Aug 11 - 12"
   }
 ];
