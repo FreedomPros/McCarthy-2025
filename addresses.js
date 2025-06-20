@@ -204,7 +204,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 24, 25, 26"
+    date: "July 24 - 25"
   },
   {
     name: "SOLAR MONEY GANG, OMNI, SPARTANS DFBUB, SUPREME (70) TX",
