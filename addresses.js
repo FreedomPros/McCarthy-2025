@@ -221,7 +221,8 @@ window.addresses = [
       {
         team: "OMNI",
         people: [
-          { name: "Sam Parks", phone: "(714) 612-2222" }
+          { name: "Sam Parks", phone: "(714) 612-2222" },
+          { name: "Caleb Brown", phone: "(703) 677-1363" },
         ]
       },
       {
