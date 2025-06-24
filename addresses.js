@@ -183,7 +183,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 20"
+    date: "July 22"
   },
   {
     name: "CTRL & BOUKNIGHT (100) MI",
@@ -222,7 +222,7 @@ window.addresses = [
         team: "OMNI",
         people: [
           { name: "Sam Parks", phone: "(714) 612-2222" },
-          { name: "Caleb Brown", phone: "(703) 677-1363" },
+          { name: "Caleb Brown" }
         ]
       },
       {
@@ -282,7 +282,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 31 - Aug 1"
+    date: "July 30 - Aug 1"
   },
   {
     name: "ALL BAD (30-40) TX",
