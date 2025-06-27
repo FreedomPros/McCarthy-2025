@@ -446,7 +446,7 @@ window.addresses = [
     date: "Aug 28 - 29"
   },
   {
-    name: "CULTURE U & REGULATORS",
+    name: "CULTURE U & REGULATORS (30) OK",
     address: "2717 S Vermont Ave, Oklahoma City, OK 73108",
     coords: [35.4429, -97.5632],
     contacts: [
