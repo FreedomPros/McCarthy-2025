@@ -467,7 +467,7 @@ window.addresses = [
     date: "Sep 1 - 2"
   },
   {
-    name: "WATTS UP! & ODYSSEY (30-35)",
+    name: "WATTS UP! & ODYSSEY (30-35) MA",
     address: "135 Robert Treat Paine Dr. Taunton, MA 02780",
     coords: [41.8972, -71.0296],
     contacts: [
