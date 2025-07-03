@@ -172,29 +172,21 @@ window.addresses = [
     date: "July 17, 18, 19"
   },
   {
-    name: "SOL (10) MI",
-    address: "5786 W Saginaw Hwy, Lansing, MI 48917",
-    coords: [42.7254, -84.6318],
+    name: "SOL, RELENTLESS & BOUKNIGHT (40-45) MI",
+    address: "33043 Hamilton Ct, Farmington Hills, MI 48334",
+    coords: [42.5322, -83.3746],
     contacts: [
       {
         team: "SOL",
         people: [
           { name: "Korey Lopez", phone: "(517) 914-4057" }
         ]
-      }
-    ],
-    date: "July 22"
-  },
-  {
-    name: "CTRL & BOUKNIGHT (100) MI",
-    address: "26211 Central Park Blvd. Southfield, Mi 48076",
-    coords: [42.4774, -83.2452],
-    contacts: [
+      },
       {
-        team: "CTRL",
+        team: "RELENTLESS",
         people: [
-          { name: "Alex Mueller", phone: "(402) 591-1482" },
-          { name: "Matt Merkel", phone: "(402) 739-3540" }
+          { name: "Nick Fischer", phone: "(831) 251-5612" },
+          { name: "Adam Martinez", phone: "(480) 862-5118" }
         ]
       },
       {
@@ -204,7 +196,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "July 24 - 25"
+    date: "July 22 - 23"
   },
   {
     name: "SOLAR MONEY GANG, OMNI, SPARTANS DFBUB, SUPREME (70) TX",
@@ -507,17 +499,61 @@ window.addresses = [
     date: "Sep 8 - 9"
   },
   {
-    name: "CAPITAL MARYLAND (60) MD",
+    name: "CAPITAL MARYLAND, DMV & ARMADA (80) MD",
     address: "10010 Junction Dr. Suite s115. Annapolis Junction MD",
     coords: [39.1321, -76.7896],
     contacts: [
       {
         team: "CAPITAL MARYLAND",
         people: [
-          { name: "Jordan Gruzinski", phone: "(443) 790-9816" }
+          { name: "Jake Cook", phone: "(714) 308-8669" }
+        ]
+      },
+      {
+        team: "DMV",
+        people: [
+          { name: "Chris Burgess", phone: "(801) 698-6111" }
+        ]
+      },
+      {
+        team: "ARMADA",
+        people: [
+          { name: "Quentin Dotson", phone: "(240) 678-2475" }
         ]
       }
     ],
     date: "Sep 11 - 12"
+  },
+  {
+    name: "GRAIL, ALL STARS, FRANCHISE, & THE GEORGIA DAWGS (40) GA",
+    address: "5650 Rivertech Ct. Suite K Riverdale MD 20737",
+    coords: [38.9634, -76.9154],
+    contacts: [
+      {
+        team: "GRAIL",
+        people: [
+          { name: "Chandler Follett", phone: "(480) 544-0153" }
+        ]
+      },
+      {
+        team: "ALL STARS",
+        people: [
+          { name: "Sam Parks", phone: "(714) 612-2222" }
+        ]
+      },
+      {
+        team: "FRANCHISE",
+        people: [
+          { name: "Quentin Dotson", phone: "(240) 678-2475" }
+        ]
+      },
+      {
+        team: "THE GEORGIA DAWGS",
+        people: [
+          { name: "Chris Burgess", phone: "(801) 698-6111" }
+        ]
+      }
+    ],
+    date: "Sep 15 - 16"
   }
 ];
