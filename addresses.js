@@ -1,6 +1,8 @@
 window.addresses = [
   {
     name: "FURY (150 - 200) CA",
+    state: "California",
+    participants: "150-200",
     address: "15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
     coords: [33.6644, -117.7576],
     contacts: [
@@ -15,6 +17,8 @@ window.addresses = [
   },
   {
     name: "MOMENTVS (70-80) CA",
+    state: "California",
+    participants: "70-80",
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
     coords: [34.0921, -117.5737],
     contacts: [
@@ -30,6 +34,8 @@ window.addresses = [
   },
   {
     name: "DAUNTLESS & MOTION (60-70) CA",
+    state: "California",
+    participants: "60-70",
     address: "FURY OFFICE: 15440 Laguna Canyon Rd. Suite 210. Irvine, CA. 92618",
     coords: [33.6644, -117.7576],
     contacts: [
@@ -51,6 +57,8 @@ window.addresses = [
   },
   {
     name: "BAN, UNITED, & FORGE (65-75) CA",
+    state: "California",
+    participants: "65-75",
     address: "10532 Acacia St. Rancho Cucomongo, Ca. 91730",
     coords: [34.0921, -117.5743],
     contacts: [
@@ -78,6 +86,8 @@ window.addresses = [
   },
   {
     name: "THE SPARTANS, EMPIRE & Kyros LA (50+) CA",
+    state: "California",
+    participants: "50+",
     address: "27141 Hideaway Ave. Santa Clarita, 91351",
     coords: [34.4264, -118.4842],
     contacts: [
@@ -99,6 +109,8 @@ window.addresses = [
   },
   {
     name: "PRIME & APOLLO (30) CA",
+    state: "California",
+    participants: "30",
     address: "FreedomForever: 3010 San Antonio Dr. Fowler, CA 93625",
     coords: [36.6177, -119.6782],
     contacts: [
@@ -119,6 +131,8 @@ window.addresses = [
   },
   {
     name: "MOTION (50+) CA",
+    state: "California",
+    participants: "50+",
     address: "6144 Industrial Way. Suite B. Livermore, CA. 94551",
     coords: [37.7038, -121.7680],
     contacts: [
@@ -133,6 +147,8 @@ window.addresses = [
   },
   {
     name: "EMPIRE, VITALITY, ENVISION, EXTREME & SLINGERS (140) IL",
+    state: "Illinois",
+    participants: "140",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
     contacts: [
@@ -173,6 +189,8 @@ window.addresses = [
   },
   {
     name: "SOL, RELENTLESS & BOUKNIGHT (40-45) MI",
+    state: "Michigan",
+    participants: "40-45",
     address: "33043 Hamilton Ct, Farmington Hills, MI 48334",
     coords: [42.5322, -83.3746],
     contacts: [
@@ -200,6 +218,8 @@ window.addresses = [
   },
   {
     name: "SOLAR MONEY GANG, OMNI, SPARTANS DFBUB, SUPREME (70) TX",
+    state: "Texas",
+    participants: "70",
     address: "3488 E Long Ave Fort Worth, TX 76137",
     coords: [32.8134, -97.3021],
     contacts: [
@@ -234,6 +254,8 @@ window.addresses = [
   },
   {
     name: "ELITE CHAKRA, IMPACT GROUP, THE MASTERS, SPACE CITY, THE STANDARD, ELEVATE (140) TX",
+    state: "Texas",
+    participants: "140",
     address: "1920 Primewest Pkwy. #400. Katy, TX 77449",
     coords: [29.7841, -95.7317],
     contacts: [
@@ -278,6 +300,8 @@ window.addresses = [
   },
   {
     name: "ALL BAD (30-40) TX",
+    state: "Texas",
+    participants: "30-40",
     address: "1900 E Howard Ln. Fluegerville, TX. 78660",
     coords: [30.4196, -97.6305],
     contacts: [
@@ -292,6 +316,8 @@ window.addresses = [
   },
   {
     name: "SAN ANTONIO (20-30) TX",
+    state: "Texas",
+    participants: "20-30",
     address: "15002 Tradesman Dr, San Antonio, TX 78249",
     coords: [29.5777, -98.5896],
     contacts: [
@@ -306,6 +332,8 @@ window.addresses = [
   },
   {
     name: "LUMINOSITY (25) NM",
+    state: "New Mexico",
+    participants: "25",
     address: "10131 Coors Blvd NW. Ste G7. Albuquerque, NM 87114",
     coords: [35.1926, -106.6987],
     contacts: [
@@ -320,6 +348,8 @@ window.addresses = [
   },
   {
     name: "ACSEND, VOLTAIC, NXT LVL, ALCHEMY, VANTA (45-55) AZ",
+    state: "Arizona",
+    participants: "45-55",
     address: "2440 E Germann Rd. Suite 1. Chandler, Az. 85286",
     coords: [33.2822, -111.8137],
     contacts: [
@@ -352,6 +382,8 @@ window.addresses = [
   },
   {
     name: "NRG & ALCHEMY (30 - 40) NV",
+    state: "Nevada",
+    participants: "30-40",
     address: "740 Freeport Blvd. Suite 107. Sparks, NV. 89431",
     coords: [39.5309, -119.7681],
     contacts: [
@@ -378,8 +410,10 @@ window.addresses = [
   },
   {
     name: "SUPREME & THE GOLD STANDARD (15) OR",
+    state: "Oregon",
+    participants: "15",
     address: "TBD",
-    coords: [42.3265, -122.8756], // Medford, Oregon
+    coords: [42.3265, -122.8756],
     contacts: [
       {
         team: "SUPREME",
@@ -398,6 +432,8 @@ window.addresses = [
   },
   {
     name: "SVG, FUSION, PNW TEAM & GOLD STANDARD (40-50) OR",
+    state: "Oregon",
+    participants: "40-50",
     address: "10700 SW Beaverton Hillsdale Hwy. Building 2, Suite 455. Beaverton, OR. 97005",
     coords: [45.4822, -122.7858],
     contacts: [
@@ -419,6 +455,8 @@ window.addresses = [
   },
   {
     name: "MILE HIGH MENTALITY & RDNT (25) CO",
+    state: "Colorado",
+    participants: "25",
     address: "12835 E Arapahoe Rd. Tower 1, Floor 7. Centennial, CO.",
     coords: [39.5940, -104.8395],
     contacts: [
@@ -439,6 +477,8 @@ window.addresses = [
   },
   {
     name: "CULTURE U & REGULATORS (30) OK",
+    state: "Oklahoma",
+    participants: "30",
     address: "2717 S Vermont Ave, Oklahoma City, OK 73108",
     coords: [35.4429, -97.5632],
     contacts: [
@@ -460,6 +500,8 @@ window.addresses = [
   },
   {
     name: "WATTS UP! & ODYSSEY (30-35) MA",
+    state: "Massachusetts",
+    participants: "30-35",
     address: "135 Robert Treat Paine Dr. Taunton, MA 02780",
     coords: [41.8972, -71.0296],
     contacts: [
@@ -480,6 +522,8 @@ window.addresses = [
   },
   {
     name: "SYNDICATE, PRIME ENERGY PARTNERS, GREEN ENERGY PARTNERS & SOLARGATI (40-50) NJ",
+    state: "New Jersey",
+    participants: "40-50",
     address: "201 Commerce Dr. Mooreston, NJ. 08057",
     coords: [39.9707, -74.9446],
     contacts: [
@@ -500,6 +544,8 @@ window.addresses = [
   },
   {
     name: "CAPITAL MARYLAND, DMV & ARMADA (80) MD",
+    state: "Maryland",
+    participants: "80",
     address: "10010 Junction Dr. Suite s115. Annapolis Junction MD",
     coords: [39.1321, -76.7896],
     contacts: [
@@ -526,6 +572,8 @@ window.addresses = [
   },
   {
     name: "GRAIL, ALL STARS, FRANCHISE, & THE GEORGIA DAWGS (40) GA",
+    state: "Georgia",
+    participants: "40",
     address: "Freedom Forever: 640 Airport South Pkwy Suite 100, Atlanta, GA 30349",
     coords: [33.6288, -84.4221],
     contacts: [
@@ -558,6 +606,8 @@ window.addresses = [
   },
   {
     name: "187 & META PROS PR",
+    state: "Puerto Rico",
+    participants: "",
     address: "151 Calle de San Francisco, 1st floor. San Juan, Puerto Rico",
     coords: [18.4655, -66.1164],
     contacts: [
