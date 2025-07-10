@@ -1,3 +1,4 @@
+
 window.addresses = [
   {
     name: "FURY (150 - 200) CA",
@@ -131,9 +132,9 @@ window.addresses = [
     ],
     date: "July 14 - 15"
   },
-  // ----------- UPDATED EMPIRE, VITALITY, ENVISION, EXTREME & SLINGERS EVENTS -----------
+  // ----------- UPDATED EMPIRE, VITALITY, ENVISION EVENTS (IL) -----------
   {
-    name: "EMPIRE, VITALITY, ENVISION, EXTREME & SLINGERS (140) IL",
+    name: "EMPIRE, VITALITY, ENVISION (110) IL",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
     contacts: [
@@ -153,27 +154,13 @@ window.addresses = [
         team: "ENVISION",
         people: [
           { name: "Drew Sanders", phone: "(918) 706-5054" }
-        ]
-      },
-      {
-        team: "EXTREME",
-        people: [
-          { name: "Ben Pappas", phone: "(717) 925-6924" },
-          { name: "Tyler Whimpey", phone: "(801) 696-8581" }
-        ]
-      },
-      {
-        team: "SLINGERS",
-        people: [
-          { name: "Crew Smithson", phone: "(385) 401-9266" },
-          { name: "Jared Monhey", phone: "(801) 631-1493" }
         ]
       }
     ],
     date: "July 17 - 18"
   },
   {
-    name: "EMPIRE, VITALITY, ENVISION, EXTREME & SLINGERS (140) IL",
+    name: "EMPIRE, VITALITY, ENVISION (110) IL",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
     coords: [41.8023, -88.0884],
     contacts: [
@@ -194,30 +181,16 @@ window.addresses = [
         people: [
           { name: "Drew Sanders", phone: "(918) 706-5054" }
         ]
-      },
-      {
-        team: "EXTREME",
-        people: [
-          { name: "Ben Pappas", phone: "(717) 925-6924" },
-          { name: "Tyler Whimpey", phone: "(801) 696-8581" }
-        ]
-      },
-      {
-        team: "SLINGERS",
-        people: [
-          { name: "Crew Smithson", phone: "(385) 401-9266" },
-          { name: "Jared Monhey", phone: "(801) 631-1493" }
-        ]
       }
     ],
     date: "July 21 - 22"
   },
-  // ----------- END UPDATED EMPIRE, VITALITY, ENVISION, EXTREME & SLINGERS EVENTS -----------
-  // ----------- UPDATED SOL, RELENTLESS & BOUKNIGHT EVENT -----------
+  // ----------- END UPDATED EMPIRE, VITALITY, ENVISION EVENTS (IL) -----------
+  // ----------- UPDATED SOL, RELENTLESS, BOUKNIGHT, EXTREME & SLINGERS EVENT (MI) -----------
   {
-    name: "SOL, RELENTLESS & BOUKNIGHT (40-45) MI",
-    address: "33043 Hamilton Ct, Farmington Hills, MI 48334",
-    coords: [42.5322, -83.3746],
+    name: "SOL, RELENTLESS, BOUKNIGHT, EXTREME & SLINGERS (60) MI",
+    address: "5786 W Saginaw Hwy, Lansing, MI 48917",
+    coords: [42.7336, -84.6394],
     contacts: [
       {
         team: "SOL",
@@ -237,11 +210,25 @@ window.addresses = [
         people: [
           { name: "Matt Lent", phone: "(954) 243-1732" }
         ]
+      },
+      {
+        team: "EXTREME",
+        people: [
+          { name: "Ben Pappas", phone: "(717) 925-6924" },
+          { name: "Tyler Whimpey", phone: "(801) 696-8581" }
+        ]
+      },
+      {
+        team: "SLINGERS",
+        people: [
+          { name: "Crew Smithson", phone: "(385) 401-9266" },
+          { name: "Jared Monhey", phone: "(801) 631-1493" }
+        ]
       }
     ],
     date: "July 24 - 25"
   },
-  // ----------- END UPDATED SOL, RELENTLESS & BOUKNIGHT EVENT -----------
+  // ----------- END UPDATED SOL, RELENTLESS, BOUKNIGHT, EXTREME & SLINGERS EVENT (MI) -----------
   {
     name: "SOLAR MONEY GANG, OMNI, SPARTANS DFBUB, SUPREME (70) TX",
     address: "3488 E Long Ave Fort Worth, TX 76137",
