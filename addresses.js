@@ -1,4 +1,3 @@
-
 window.addresses = [
   {
     name: "FURY (150 - 200) CA",
@@ -375,7 +374,8 @@ window.addresses = [
       {
         team: "VANTA",
         people: [
-          { name: "Trey Greenhill", phone: "(480) 294-5186" }
+          { name: "Brandon Ewell", phone: "(619) 993-2249" },
+          { name: "Chris Chavez", phone: "(719) 251-6789" }
         ]
       }
     ],
