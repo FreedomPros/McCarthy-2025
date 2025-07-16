@@ -604,26 +604,6 @@ window.addresses = [
     date: "Sep 18-19"
   },
   {
-    name: "<span style='font-weight: bold; font-size: 1.2em;'>TBD</span> FORT MYERS STINGERS & SOUTH CENTRAL POWER (30) FL",
-    address: "11561 Majestic Palms Blvd Unit 105, Fort Myers, FL 33908",
-    coords: [26.4919, -81.8838],
-    contacts: [
-      {
-        team: "FORT MYERS STINGERS",
-        people: [
-          { name: "Noah Weiner", phone: "(850) 533-2239" }
-        ]
-      },
-      {
-        team: "SOUTH CENTRAL POWER",
-        people: [
-          { name: "Jason Saucier", phone: "(239) 204-7299" }
-        ]
-      }
-    ],
-    date: "Sep 25 - 26"
-  },
-  {
     name: "SWAMP KINGS, HUSTLERS UNITED, ZERO GRAVITY (30) FL",
     address: "555 Winderley Pl. Ste 127. Maitland, FL 32751",
     coords: [28.6265, -81.3858], // Approximate Maitland, FL
@@ -648,5 +628,25 @@ window.addresses = [
       }
     ],
     date: "Sep 22 - 23"
+  },
+  {
+    name: "<span style='font-weight: bold; font-size: 1.2em;'>TBD</span> FORT MYERS STINGERS & SOUTH CENTRAL POWER (30) FL",
+    address: "11561 Majestic Palms Blvd Unit 105, Fort Myers, FL 33908",
+    coords: [26.4919, -81.8838],
+    contacts: [
+      {
+        team: "FORT MYERS STINGERS",
+        people: [
+          { name: "Noah Weiner", phone: "(850) 533-2239" }
+        ]
+      },
+      {
+        team: "SOUTH CENTRAL POWER",
+        people: [
+          { name: "Jason Saucier", phone: "(239) 204-7299" }
+        ]
+      }
+    ],
+    date: "Sep 25 - 26"
   }
 ];
