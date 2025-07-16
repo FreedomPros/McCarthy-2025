@@ -131,7 +131,6 @@ window.addresses = [
     ],
     date: "July 14 - 15"
   },
-  // ----------- UPDATED EMPIRE, VITALITY, ENVISION EVENTS (IL) -----------
   {
     name: "EMPIRE, VITALITY, ENVISION (110) IL",
     address: "4300 Commerce Ct, unit 240 Lisle, IL 60532",
@@ -184,8 +183,6 @@ window.addresses = [
     ],
     date: "July 21 - 22"
   },
-  // ----------- END UPDATED EMPIRE, VITALITY, ENVISION EVENTS (IL) -----------
-  // ----------- UPDATED SOL, RELENTLESS, BOUKNIGHT, EXTREME & SLINGERS EVENT (MI) -----------
   {
     name: "SOL, RELENTLESS, BOUKNIGHT, EXTREME & SLINGERS (60) MI",
     address: "5786 W Saginaw Hwy, Lansing, MI 48917",
@@ -227,7 +224,6 @@ window.addresses = [
     ],
     date: "July 24 - 25"
   },
-  // ----------- END UPDATED SOL, RELENTLESS, BOUKNIGHT, EXTREME & SLINGERS EVENT (MI) -----------
   {
     name: "SOLAR MONEY GANG, OMNI, SPARTANS DFBUB, SUPREME (70) TX",
     address: "3488 E Long Ave Fort Worth, TX 76137",
@@ -606,6 +602,26 @@ window.addresses = [
       }
     ],
     date: "Sep 18-19"
+  },
+  {
+    name: "<span style='font-weight: bold; font-size: 1.2em;'>TBD</span> FORT MYERS STINGERS & SOUTH CENTRAL POWER (30) FL",
+    address: "11561 Majestic Palms Blvd Unit 105, Fort Myers, FL 33908",
+    coords: [26.4919, -81.8838],
+    contacts: [
+      {
+        team: "FORT MYERS STINGERS",
+        people: [
+          { name: "Noah Weiner", phone: "(850) 533-2239" }
+        ]
+      },
+      {
+        team: "SOUTH CENTRAL POWER",
+        people: [
+          { name: "Jason Saucier", phone: "(239) 204-7299" }
+        ]
+      }
+    ],
+    date: "Sep 25 - 26"
   },
   {
     name: "SWAMP KINGS, HUSTLERS UNITED, ZERO GRAVITY (30) FL",
