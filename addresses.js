@@ -185,8 +185,8 @@ window.addresses = [
   },
   {
     name: "SOL, RELENTLESS, BOUKNIGHT, EXTREME & SLINGERS (60) MI",
-    address: "5786 W Saginaw Hwy, Lansing, MI 48917",
-    coords: [42.7336, -84.6394],
+    address: "Freedom: 41158 Koppernick Rd. Canton, MI. 48187",
+    coords: [42.3255, -83.4632],
     contacts: [
       {
         team: "SOL",
@@ -259,7 +259,7 @@ window.addresses = [
     date: "July 28 - 29"
   },
   {
-    name: "ELITE CHAKRA, IMPACT GROUP, THE MASTERS, SPACE CITY, THE STANDARD, ELEVATE (140) TX",
+    name: "ELITE CHAKRA, IMPACT GROUP, PRIME, THE STANDARD, ELEVATE (140) TX",
     address: "1920 Primewest Pkwy. #400. Katy, TX 77449",
     coords: [29.7841, -95.7317],
     contacts: [
@@ -276,15 +276,9 @@ window.addresses = [
         ]
       },
       {
-        team: "THE MASTERS",
+        team: "PRIME",
         people: [
-          { name: "Layton Hix", phone: "(346) 503-6060" }
-        ]
-      },
-      {
-        team: "SPACE CITY",
-        people: [
-          { name: "Saint Termeteet", phone: "(713) 887-2739" }
+          { name: "Tanner Sorenson", phone: "(801) 674-0772" }
         ]
       },
       {
@@ -604,7 +598,7 @@ window.addresses = [
     date: "Sep 18-19"
   },
   {
-    name: "SWAMP KINGS, HUSTLERS UNITED, ZERO GRAVITY (30) FL",
+    name: "SWAMP KINGS, HUSTLERS UNITED, ZERO GRAVITY, ROBIN HOOD, THE REBELLION (40) FL",
     address: "555 Winderley Pl. Ste 127. Maitland, FL 32751",
     coords: [28.6265, -81.3858], // Approximate Maitland, FL
     contacts: [
@@ -625,6 +619,18 @@ window.addresses = [
         people: [
           { name: "Jacari Brown", phone: "(561) 400-1219" }
         ]
+      },
+      {
+        team: "ROBIN HOOD",
+        people: [
+          { name: "Chris Burgess", phone: "(801) 698-6111" }
+        ]
+      },
+      {
+        team: "THE REBELLION",
+        people: [
+          { name: "Matt Lent", phone: "(954) 243-1732" }
+        ]
       }
     ],
     date: "Sep 22 - 23"
@@ -637,7 +643,7 @@ window.addresses = [
       {
         team: "FORT MYERS STINGERS",
         people: [
-          { name: "Noah Weiner", phone: "(850) 533-2239" }
+          { name: "Cody Mitchem", phone: "(850) 380-6298" }
         ]
       },
       {
