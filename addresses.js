@@ -372,35 +372,9 @@ window.addresses = [
     date: "Aug 14 - 15"
   },
   {
-    name: "NRG & ALCHEMY (30 - 40) NV",
-    address: "740 Freeport Blvd. Suite 107. Sparks, NV. 89431",
-    coords: [39.5309, -119.7681],
-    contacts: [
-      {
-        team: "NRG",
-        people: [
-          { name: "Jeff Iverson", phone: "(702) 279-1298" }
-        ]
-      },
-      {
-        team: "ALCHEMY",
-        people: [
-          { name: "Calder Bonnet", phone: "(801) 380-2282" }
-        ]
-      },
-      {
-        team: "Ben Newell",
-        people: [
-          { name: "Ben Newell", phone: "(360) 504-7154" }
-        ]
-      }
-    ],
-    date: "Aug 18 - 19"
-  },
-  {
     name: "SUPREME & THE GOLD STANDARD (15) OR",
-    address: "TBD",
-    coords: [42.3265, -122.8756], // Medford, Oregon
+    address: "2008 Commerce Dr, Medford, OR 97504",
+    coords: [42.3358, -122.8449],
     contacts: [
       {
         team: "SUPREME",
@@ -459,27 +433,6 @@ window.addresses = [
     date: "Aug 28 - 29"
   },
   {
-    name: "CULTURE U & REGULATORS (30) OK",
-    address: "2717 S Vermont Ave, Oklahoma City, OK 73108",
-    coords: [35.4429, -97.5632],
-    contacts: [
-      {
-        team: "CULTURE U",
-        people: [
-          { name: "Ammon Fifita", phone: "(801) 830-9346" },
-          { name: "Austin Child", phone: "(385) 223-6718" }
-        ]
-      },
-      {
-        team: "REGULATORS",
-        people: [
-          { name: "Josh Simmons", phone: "(682) 978-1939" }
-        ]
-      }
-    ],
-    date: "Sep 1 - 2"
-  },
-  {
     name: "WATTS UP! & ODYSSEY (30-35) MA",
     address: "135 Robert Treat Paine Dr. Taunton, MA 02780",
     coords: [41.8972, -71.0296],
@@ -497,7 +450,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "Sep 4 - 5"
+    date: "Sep 1 - 2"
   },
   {
     name: "SYNDICATE, PRIME ENERGY PARTNERS, GREEN ENERGY PARTNERS & SOLARGATI (40-50) NJ",
