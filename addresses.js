@@ -453,7 +453,7 @@ window.addresses = [
     date: "Sep 1 - 2"
   },
   {
-    name: "DOMINOUS 1",
+    name: "DOMINOUS 1 (20) PA",
     address: "TBD",
     coords: [40.6084, -75.4902], // Allentown, PA
     contacts: [
