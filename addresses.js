@@ -453,6 +453,20 @@ window.addresses = [
     date: "Sep 1 - 2"
   },
   {
+    name: "DOMINOUS 1",
+    address: "TBD",
+    coords: [40.6084, -75.4902], // Allentown, PA
+    contacts: [
+      {
+        team: "DOMINOUS 1",
+        people: [
+          { name: "Justin Alysworth", phone: "810-858-3614" }
+        ]
+      }
+    ],
+    date: "Sep 8"
+  },
+  {
     name: "SYNDICATE, PRIME ENERGY PARTNERS, GREEN ENERGY PARTNERS & SOLARGATI (40-50) NJ",
     address: "201 Commerce Dr. Mooreston, NJ. 08057",
     coords: [39.9707, -74.9446],
@@ -470,7 +484,7 @@ window.addresses = [
         ]
       }
     ],
-    date: "Sep 8 - 9"
+    date: "Sep 9"
   },
   {
     name: "CAPITAL MARYLAND, DMV & ARMADA (80) MD",
