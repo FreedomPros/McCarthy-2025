@@ -453,7 +453,7 @@ window.addresses = [
     date: "Sep 1 - 2"
   },
   {
-    name: "DOMINOUS 1 (20) PA",
+    name: "DOMINOUS 1",
     address: "TBD",
     coords: [40.6084, -75.4902], // Allentown, PA
     contacts: [
@@ -513,7 +513,7 @@ window.addresses = [
     date: "Sep 11 - 12"
   },
   {
-    name: "GRAIL, ALL STARS, FRANCHISE, & THE GEORGIA DAWGS (40) GA",
+    name: "GRAIL, ALL STARS (40) GA",
     address: "FF 640 Airport South Pkwy Suite 100, Atlanta, GA 30349",
     coords: [33.6288, -84.4221],
     contacts: [
@@ -528,44 +528,12 @@ window.addresses = [
         people: [
           { name: "Sam Parks", phone: "(714) 612-2222" }
         ]
-      },
-      {
-        team: "FRANCHISE",
-        people: [
-          { name: "Quentin Dotson", phone: "(240) 678-2475" }
-        ]
-      },
-      {
-        team: "THE GEORGIA DAWGS",
-        people: [
-          { name: "Chris Burgess", phone: "(801) 698-6111" }
-        ]
       }
     ],
     date: "Sep 15 - 16"
   },
   {
-    name: "187 & META PROS (55) PR",
-    address: "151 Calle de San Francisco, 1st floor. San Juan, Puerto Rico",
-    coords: [18.4655, -66.1164],
-    contacts: [
-      {
-        team: "187",
-        people: [
-          { name: "Felix Alba", phone: "(939) 324-3787" }
-        ]
-      },
-      {
-        team: "META PROS",
-        people: [
-          { name: "Fernando Santiago", phone: "(352) 278-6865" }
-        ]
-      }
-    ],
-    date: "Sep 18-19"
-  },
-  {
-    name: "SWAMP KINGS, HUSTLERS UNITED, ZERO GRAVITY, ROBIN HOOD, THE REBELLION (40) FL",
+    name: "SWAMP KINGS, HUSTLERS UNITED, ROBIN HOOD, THE REBELLION (40) FL",
     address: "555 Winderley Pl. Ste 127. Maitland, FL 32751",
     coords: [28.6265, -81.3858], // Approximate Maitland, FL
     contacts: [
@@ -582,12 +550,6 @@ window.addresses = [
         ]
       },
       {
-        team: "ZERO GRAVITY",
-        people: [
-          { name: "Jacari Brown", phone: "(561) 400-1219" }
-        ]
-      },
-      {
         team: "ROBIN HOOD",
         people: [
           { name: "Chris Burgess", phone: "(801) 698-6111" }
@@ -600,10 +562,10 @@ window.addresses = [
         ]
       }
     ],
-    date: "Sep 22 - 23"
+    date: "Sep 18-19"
   },
   {
-    name: "<span style='font-weight: bold; font-size: 1.2em;'>TBD</span> FORT MYERS STINGERS & SOUTH CENTRAL POWER (30) FL",
+    name: "FORT MYERS STINGERS & SOUTH CENTRAL POWER (30) FL",
     address: "11561 Majestic Palms Blvd Unit 105, Fort Myers, FL 33908",
     coords: [26.4919, -81.8838],
     contacts: [
@@ -620,6 +582,6 @@ window.addresses = [
         ]
       }
     ],
-    date: "Sep 25 - 26"
+    date: "Sep 22 - 23"
   }
 ];
