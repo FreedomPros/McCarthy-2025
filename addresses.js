@@ -533,9 +533,9 @@ window.addresses = [
     date: "Sep 15 - 16"
   },
   {
-    name: "SWAMP KINGS, HUSTLERS UNITED, ROBIN HOOD, THE REBELLION (40) FL",
+    name: "SWAMP KINGS & HUSTLERS UNITED (FL)",
     address: "555 Winderley Pl. Ste 127. Maitland, FL 32751",
-    coords: [28.6265, -81.3858], // Approximate Maitland, FL
+    coords: [28.6265, -81.3858],
     contacts: [
       {
         team: "SWAMP KINGS",
@@ -548,7 +548,15 @@ window.addresses = [
         people: [
           { name: "Chris Burgess", phone: "(801) 698-6111" }
         ]
-      },
+      }
+    ],
+    date: "Sep 18"
+  },
+  {
+    name: "ROBIN HOOD & THE REBELLION (FL)",
+    address: "5225 Tech Data Dr, Clearwater, FL 33760",
+    coords: [27.9000, -82.6876], // Approx coordinates for 5225 Tech Data Dr, Clearwater, FL
+    contacts: [
       {
         team: "ROBIN HOOD",
         people: [
@@ -562,26 +570,6 @@ window.addresses = [
         ]
       }
     ],
-    date: "Sep 18-19"
-  },
-  {
-    name: "FORT MYERS STINGERS & SOUTH CENTRAL POWER (30) FL",
-    address: "11561 Majestic Palms Blvd Unit 105, Fort Myers, FL 33908",
-    coords: [26.4919, -81.8838],
-    contacts: [
-      {
-        team: "FORT MYERS STINGERS",
-        people: [
-          { name: "Cody Mitchem", phone: "(850) 380-6298" }
-        ]
-      },
-      {
-        team: "SOUTH CENTRAL POWER",
-        people: [
-          { name: "Jason Saucier", phone: "(239) 204-7299" }
-        ]
-      }
-    ],
-    date: "Sep 22 - 23"
+    date: "Sep 19"
   }
 ];
