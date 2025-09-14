@@ -553,10 +553,16 @@ window.addresses = [
     date: "Sep 18"
   },
   {
-    name: "ROBIN HOOD & THE REBELLION (FL)",
+    name: "EMPIRE, ROBIN HOOD & THE REBELLION (FL)",
     address: "5225 Tech Data Dr, Clearwater, FL 33760",
-    coords: [27.9000, -82.6876], // Approx coordinates for 5225 Tech Data Dr, Clearwater, FL
+    coords: [27.9000, -82.6876],
     contacts: [
+      {
+        team: "EMPIRE",
+        people: [
+          { name: "Rocky Niger", phone: "727-748-6089" }
+        ]
+      },
       {
         team: "ROBIN HOOD",
         people: [
